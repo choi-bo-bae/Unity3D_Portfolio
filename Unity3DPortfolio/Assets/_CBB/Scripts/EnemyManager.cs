@@ -23,7 +23,7 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target != null)
+        if (target != null) //플레이어가 존재하면
         {
             SpawnEnemy();
         }
@@ -31,21 +31,19 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (max < 1)
+        if (max < 1)    //1마리까지 실험
         {
             curTime += Time.deltaTime;
 
             if (curTime > spawnTime)
             {
-                spawnTime = Random.Range(2.0f, 3.0f);
+                spawnTime = Random.Range(2.0f, 3.0f);   //스폰 시간 다양하게 랜덤으로
 
                 GameObject enemy = Instantiate(enemyFactory);
 
-                enemy.transform.position = spawnPoint.transform.position;
-
-               
-
-                max++;
+                enemy.transform.position = spawnPoint.transform.position;   //위치 맞춰주기
+                
+                max++;  //최대 갯수 맞춰주기
 
                 curTime = 0.0f;
             }

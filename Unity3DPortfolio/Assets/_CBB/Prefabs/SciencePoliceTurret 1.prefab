@@ -485,7 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   speed: 40
-  searchRange: 10
+  searchRange: 5
   attack: 5
   atkTime: 0.5
 --- !u!1 &182238

@@ -18,7 +18,7 @@ public class EnemyMove : MonoBehaviour
     private GameObject[] enemyTr;  //애너미의 순찰 포인트
     private GameObject target;  //플레이어
     public int hp = 100;    //체력
-    private int idx;
+    private int idx;    //몇 번째 스폰포인트로 갈지 난수로 결정
     #endregion
 
     #region "Move상태에 필요한 변수들"
@@ -29,7 +29,7 @@ public class EnemyMove : MonoBehaviour
     #region "Attack 상태에 필요한 변수들"
     public float attack = 5.0f; //공격력
     private float curTime = 0.0f;
-    public float atkTime = 0.5f;
+    public float atkTime = 0.5f;    //일정 시간마다 공격하기
     #endregion
 
   
@@ -38,10 +38,10 @@ public class EnemyMove : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
-        state = EnemyState.Move;
-        enemyTr = GameObject.FindGameObjectsWithTag("PatrolPoints");
+        state = EnemyState.Move;    //기본적으로 순찰하기
+        enemyTr = GameObject.FindGameObjectsWithTag("PatrolPoints");    //순찰 포인트 결정
         target = GameObject.Find("Player");
-        idx = Random.Range(0, enemyTr.Length);
+        idx = Random.Range(0, enemyTr.Length);  //몇 번째 순찰포인트로 갈지 결정
     }
 
     // Update is called once per frame
@@ -57,14 +57,14 @@ public class EnemyMove : MonoBehaviour
     {
         state = EnemyState.Move;
 
-        print(" Distance : " + Vector3.Distance(enemyTr[idx].transform.position, transform.position));
+        print(" Distance : " + Vector3.Distance(enemyTr[idx].transform.position, transform.position));  //디스턴스 찍어보기 왜인지 계속 Y값이 15가 나온다.
 
         if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 3.0f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
         {
            
-            idx = Random.Range(0, enemyTr.Length);
+            idx = Random.Range(0, enemyTr.Length);  //난수 다시 결정
            
-            Vector3 dir = (enemyTr[idx].transform.position - transform.position).normalized;
+            Vector3 dir = (enemyTr[idx].transform.position - transform.position).normalized;    //이동
            
             cc.SimpleMove(dir * speed);
         }
