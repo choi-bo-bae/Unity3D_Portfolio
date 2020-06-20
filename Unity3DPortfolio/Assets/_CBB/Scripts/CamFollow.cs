@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CamFollow : MonoBehaviour
 {
-    public GameObject target;
+    private GameObject target;
 
     public float followSpeed = 2.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        target = GameObject.Find("Player");
     }
 
     // Update is called once per frame

@@ -59,7 +59,7 @@ public class EnemyMove : MonoBehaviour
 
         print(" Distance : " + Vector3.Distance(enemyTr[idx].transform.position, transform.position));  //디스턴스 찍어보기 왜인지 계속 Y값이 15가 나온다.
 
-        if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 3.0f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
+        if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 12.5f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
         {
            
             idx = Random.Range(0, enemyTr.Length);  //난수 다시 결정
