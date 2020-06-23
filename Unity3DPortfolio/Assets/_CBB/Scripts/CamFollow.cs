@@ -11,12 +11,23 @@ public class CamFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.Find("Player");
+       
+        target = GameObject.Find("CamFollowPoint");
+       
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            target = GameObject.Find("1stView");    //1인칭
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            target = GameObject.Find("CamFollowPoint"); //3인칭
+        }
+
         transform.position = target.transform.position;
     }
 
