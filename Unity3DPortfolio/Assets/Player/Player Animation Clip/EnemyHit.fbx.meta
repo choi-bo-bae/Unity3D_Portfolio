@@ -1,172 +1,494 @@
 fileFormatVersion: 2
 guid: ad61dc22001e44db2b5b22fcb43a22c2
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: Rwrist
-    100002: Rfingers
-    100004: pelvis
-    100006: Lfoot
-    100008: Rthigh
-    100010: Lthumb
-    100012: Rthumb
-    100014: Lcalf
-    100016: Rshoulder
-    100018: CameraTargetDir
-    100020: Lforearm
-    100022: stomach
-    100024: Lshoulder
-    100026: neck
-    100028: Larm
-    100030: CameraTargetPos
-    100032: Rarm
-    100034: chest
-    100038: //RootNode
-    100040: Ribs
-    100042: Rfoot
-    100044: Lthigh
-    100046: head
-    100048: Rforearm
-    100050: Lfingers
-    100052: Lwrist
-    100054: Rweaponholder
-    100056: Rcalf
-    100058: Lgadgetholder
-    400000: Rwrist
-    400002: Rfingers
-    400004: pelvis
-    400006: Lfoot
-    400008: Rthigh
-    400010: Lthumb
-    400012: Rthumb
-    400014: Lcalf
-    400016: Rshoulder
-    400018: CameraTargetDir
-    400020: Lforearm
-    400022: stomach
-    400024: Lshoulder
-    400026: neck
-    400028: Larm
-    400030: CameraTargetPos
-    400032: Rarm
-    400034: chest
-    400038: //RootNode
-    400040: Ribs
-    400042: Rfoot
-    400044: Lthigh
-    400046: head
-    400048: Rforearm
-    400050: Lfingers
-    400052: Lwrist
-    400054: Rweaponholder
-    400056: Rcalf
-    400058: Lgadgetholder
-    4300000: player_mesh
-    4300002: baaba
-    7400000: InjuryIdleBack1
-    7400002: InjuryIdleFront1
-    7400004: InjuryIdleFront3
-    7400006: InjuryIdleFront2
-    7400008: InjuryIdleBack2
-    7400010: InjuryIdleRight1
-    7400012: InjuryIdleRight2
-    7400014: InjuryIdleBack3
-    7400016: InjuryIdleLeft1
-    7400018: InjuryIdleLeft2
-    7400020: InjuryUniversal1
-    7400022: InjuryUniversal2
-    7400024: InjuryUniversal3
-    7400026: InjuryCoverCrouchAimCenter
-    7400028: InjuryCoverStandIdle
-    7400030: InjuryCoverCrouchIdle
-    7400032: InjuryCoverStandAimLeft
-    7400034: InjuryCoverCrouchAimRight
-    7400036: InjuryCoverStandAimRight
-    7400038: InjuryCoverCrouchAimLeft
-    7400040: CoverStandAimRightStart
-    7400042: CoverStandAimRightBack
-    7400044: CoverStandAimLeftStart
-    7400046: CoverStandAimLeftBack
-    7400048: CoverCrouchAimRightStart
-    7400050: CoverCrouchAimRightBack
-    7400052: CoverCrouchAimCenterStart
-    7400054: CoverCrouchAimCenterBack
-    7400056: CoverCrouchAimLeftStart
-    7400058: CoverCrouchAimLeftBack
-    7400060: JumpOverToIdle
-    7400062: DeathCoverCrouchIdle
-    7400064: DeathCoverStandIdle
-    7400066: DeathCoverCrouchAimCenter
-    7400068: DeathCoverCrouchAimLeft
-    7400070: DeathCoverCrouchAimRight
-    7400072: DeathCoverStandAimLeft
-    7400074: DeathCoverStandAimRight
-    7400076: UseButton
-    7400078: UseWeaponbox
-    7400080: Use
-    7400082: Kick
-    7400084: CoverStandEnter
-    7400086: CoverStandLeave
-    7400088: CoverCrouchEnter
-    7400090: CoverCrouchLeave
-    7400092: CoverStandLeftLeave
-    7400094: CoverStandRightLeave
-    7400096: CoverCrouchLeftLeave
-    7400098: CoverCrouchRightLeave
-    7400100: IdleChangeWeapon
-    7400102: CoverStandChangeWeapon
-    7400104: CoverCrouchChangeWeapon
-    7400106: RunChangeWeapon
-    7400108: Land
-    7400110: CoverCrouchThrowLeft
-    7400112: CoverCrouchThrowRight
-    7400114: CoverStandThrowLeft
-    7400116: CoverStandThrowRight
-    7400118: CoverCrouchThrowCenter
-    7400120: IdleThrow
-    7400122: RunThrow
-    7400124: DeathIdleFront1
-    7400126: DeathIdleFront2
-    7400128: DeathIdleFront3
-    7400130: DeathRunL
-    7400132: DeathRunR
-    7400134: DeathRunF
-    7400136: MeleeKick
-    7400138: DeathMeleeKick
-    7400140: CoverCrouchThrowCenterR
-    7400142: CoverCrouchThrowCenterL
-    7400144: DeathMeleeKickBack
-    7400146: InjuryMeleeKick
-    7400148: InjuryMeleeKickBack
-    7400150: MeleeAttack1
-    7400152: MeleeAttack2
-    7400154: MeleeAtack3
-    7400156: DeathKO
-    7400158: InjuryKO1
-    7400160: InjuryKO2
-    7400162: InjuryKO3
-    7400164: CoverCrouchJumpUp
-    7400166: Drop
-    7400168: Tpose
-    7400170: TurnR
-    7400172: TurnL
-    7400174: UseWeaponBox
-    7400176: DeathIdle1
-    7400178: DeathIdle2
-    7400180: DeathIdle3
-    7400182: CoverCrouchThrowLeft 1
-    7400184: CoverCrouchThrowLeft 2
-    7400186: IdleReloadSMG
-    7400188: CoverCrouchStrafeRight
-    7400190: CoverStandStrafeRight
-    7400192: CoverCrouchLeaveHit
-    7400194: CoverStandLeaveHit
-    9500000: //RootNode
-    11100000: //RootNode
-    2186277476908879412: ImportLogs
+  serializedVersion: 19300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Rwrist
+  - first:
+      1: 100002
+    second: Rfingers
+  - first:
+      1: 100004
+    second: pelvis
+  - first:
+      1: 100006
+    second: Lfoot
+  - first:
+      1: 100008
+    second: Rthigh
+  - first:
+      1: 100010
+    second: Lthumb
+  - first:
+      1: 100012
+    second: Rthumb
+  - first:
+      1: 100014
+    second: Lcalf
+  - first:
+      1: 100016
+    second: Rshoulder
+  - first:
+      1: 100018
+    second: CameraTargetDir
+  - first:
+      1: 100020
+    second: Lforearm
+  - first:
+      1: 100022
+    second: stomach
+  - first:
+      1: 100024
+    second: Lshoulder
+  - first:
+      1: 100026
+    second: neck
+  - first:
+      1: 100028
+    second: Larm
+  - first:
+      1: 100030
+    second: CameraTargetPos
+  - first:
+      1: 100032
+    second: Rarm
+  - first:
+      1: 100034
+    second: chest
+  - first:
+      1: 100038
+    second: //RootNode
+  - first:
+      1: 100040
+    second: Ribs
+  - first:
+      1: 100042
+    second: Rfoot
+  - first:
+      1: 100044
+    second: Lthigh
+  - first:
+      1: 100046
+    second: head
+  - first:
+      1: 100048
+    second: Rforearm
+  - first:
+      1: 100050
+    second: Lfingers
+  - first:
+      1: 100052
+    second: Lwrist
+  - first:
+      1: 100054
+    second: Rweaponholder
+  - first:
+      1: 100056
+    second: Rcalf
+  - first:
+      1: 100058
+    second: Lgadgetholder
+  - first:
+      4: 400000
+    second: Rwrist
+  - first:
+      4: 400002
+    second: Rfingers
+  - first:
+      4: 400004
+    second: pelvis
+  - first:
+      4: 400006
+    second: Lfoot
+  - first:
+      4: 400008
+    second: Rthigh
+  - first:
+      4: 400010
+    second: Lthumb
+  - first:
+      4: 400012
+    second: Rthumb
+  - first:
+      4: 400014
+    second: Lcalf
+  - first:
+      4: 400016
+    second: Rshoulder
+  - first:
+      4: 400018
+    second: CameraTargetDir
+  - first:
+      4: 400020
+    second: Lforearm
+  - first:
+      4: 400022
+    second: stomach
+  - first:
+      4: 400024
+    second: Lshoulder
+  - first:
+      4: 400026
+    second: neck
+  - first:
+      4: 400028
+    second: Larm
+  - first:
+      4: 400030
+    second: CameraTargetPos
+  - first:
+      4: 400032
+    second: Rarm
+  - first:
+      4: 400034
+    second: chest
+  - first:
+      4: 400038
+    second: //RootNode
+  - first:
+      4: 400040
+    second: Ribs
+  - first:
+      4: 400042
+    second: Rfoot
+  - first:
+      4: 400044
+    second: Lthigh
+  - first:
+      4: 400046
+    second: head
+  - first:
+      4: 400048
+    second: Rforearm
+  - first:
+      4: 400050
+    second: Lfingers
+  - first:
+      4: 400052
+    second: Lwrist
+  - first:
+      4: 400054
+    second: Rweaponholder
+  - first:
+      4: 400056
+    second: Rcalf
+  - first:
+      4: 400058
+    second: Lgadgetholder
+  - first:
+      43: 4300000
+    second: player_mesh
+  - first:
+      43: 4300002
+    second: baaba
+  - first:
+      74: 7400000
+    second: InjuryIdleBack1
+  - first:
+      74: 7400002
+    second: InjuryIdleFront1
+  - first:
+      74: 7400004
+    second: InjuryIdleFront3
+  - first:
+      74: 7400006
+    second: InjuryIdleFront2
+  - first:
+      74: 7400008
+    second: InjuryIdleBack2
+  - first:
+      74: 7400010
+    second: InjuryIdleRight1
+  - first:
+      74: 7400012
+    second: InjuryIdleRight2
+  - first:
+      74: 7400014
+    second: InjuryIdleBack3
+  - first:
+      74: 7400016
+    second: InjuryIdleLeft1
+  - first:
+      74: 7400018
+    second: InjuryIdleLeft2
+  - first:
+      74: 7400020
+    second: InjuryUniversal1
+  - first:
+      74: 7400022
+    second: InjuryUniversal2
+  - first:
+      74: 7400024
+    second: InjuryUniversal3
+  - first:
+      74: 7400026
+    second: InjuryCoverCrouchAimCenter
+  - first:
+      74: 7400028
+    second: InjuryCoverStandIdle
+  - first:
+      74: 7400030
+    second: InjuryCoverCrouchIdle
+  - first:
+      74: 7400032
+    second: InjuryCoverStandAimLeft
+  - first:
+      74: 7400034
+    second: InjuryCoverCrouchAimRight
+  - first:
+      74: 7400036
+    second: InjuryCoverStandAimRight
+  - first:
+      74: 7400038
+    second: InjuryCoverCrouchAimLeft
+  - first:
+      74: 7400040
+    second: CoverStandAimRightStart
+  - first:
+      74: 7400042
+    second: CoverStandAimRightBack
+  - first:
+      74: 7400044
+    second: CoverStandAimLeftStart
+  - first:
+      74: 7400046
+    second: CoverStandAimLeftBack
+  - first:
+      74: 7400048
+    second: CoverCrouchAimRightStart
+  - first:
+      74: 7400050
+    second: CoverCrouchAimRightBack
+  - first:
+      74: 7400052
+    second: CoverCrouchAimCenterStart
+  - first:
+      74: 7400054
+    second: CoverCrouchAimCenterBack
+  - first:
+      74: 7400056
+    second: CoverCrouchAimLeftStart
+  - first:
+      74: 7400058
+    second: CoverCrouchAimLeftBack
+  - first:
+      74: 7400060
+    second: JumpOverToIdle
+  - first:
+      74: 7400062
+    second: DeathCoverCrouchIdle
+  - first:
+      74: 7400064
+    second: DeathCoverStandIdle
+  - first:
+      74: 7400066
+    second: DeathCoverCrouchAimCenter
+  - first:
+      74: 7400068
+    second: DeathCoverCrouchAimLeft
+  - first:
+      74: 7400070
+    second: DeathCoverCrouchAimRight
+  - first:
+      74: 7400072
+    second: DeathCoverStandAimLeft
+  - first:
+      74: 7400074
+    second: DeathCoverStandAimRight
+  - first:
+      74: 7400076
+    second: UseButton
+  - first:
+      74: 7400078
+    second: UseWeaponbox
+  - first:
+      74: 7400080
+    second: Use
+  - first:
+      74: 7400082
+    second: Kick
+  - first:
+      74: 7400084
+    second: CoverStandEnter
+  - first:
+      74: 7400086
+    second: CoverStandLeave
+  - first:
+      74: 7400088
+    second: CoverCrouchEnter
+  - first:
+      74: 7400090
+    second: CoverCrouchLeave
+  - first:
+      74: 7400092
+    second: CoverStandLeftLeave
+  - first:
+      74: 7400094
+    second: CoverStandRightLeave
+  - first:
+      74: 7400096
+    second: CoverCrouchLeftLeave
+  - first:
+      74: 7400098
+    second: CoverCrouchRightLeave
+  - first:
+      74: 7400100
+    second: IdleChangeWeapon
+  - first:
+      74: 7400102
+    second: CoverStandChangeWeapon
+  - first:
+      74: 7400104
+    second: CoverCrouchChangeWeapon
+  - first:
+      74: 7400106
+    second: RunChangeWeapon
+  - first:
+      74: 7400108
+    second: Land
+  - first:
+      74: 7400110
+    second: CoverCrouchThrowLeft
+  - first:
+      74: 7400112
+    second: CoverCrouchThrowRight
+  - first:
+      74: 7400114
+    second: CoverStandThrowLeft
+  - first:
+      74: 7400116
+    second: CoverStandThrowRight
+  - first:
+      74: 7400118
+    second: CoverCrouchThrowCenter
+  - first:
+      74: 7400120
+    second: IdleThrow
+  - first:
+      74: 7400122
+    second: RunThrow
+  - first:
+      74: 7400124
+    second: DeathIdleFront1
+  - first:
+      74: 7400126
+    second: DeathIdleFront2
+  - first:
+      74: 7400128
+    second: DeathIdleFront3
+  - first:
+      74: 7400130
+    second: DeathRunL
+  - first:
+      74: 7400132
+    second: DeathRunR
+  - first:
+      74: 7400134
+    second: DeathRunF
+  - first:
+      74: 7400136
+    second: MeleeKick
+  - first:
+      74: 7400138
+    second: DeathMeleeKick
+  - first:
+      74: 7400140
+    second: CoverCrouchThrowCenterR
+  - first:
+      74: 7400142
+    second: CoverCrouchThrowCenterL
+  - first:
+      74: 7400144
+    second: DeathMeleeKickBack
+  - first:
+      74: 7400146
+    second: InjuryMeleeKick
+  - first:
+      74: 7400148
+    second: InjuryMeleeKickBack
+  - first:
+      74: 7400150
+    second: MeleeAttack1
+  - first:
+      74: 7400152
+    second: MeleeAttack2
+  - first:
+      74: 7400154
+    second: MeleeAtack3
+  - first:
+      74: 7400156
+    second: DeathKO
+  - first:
+      74: 7400158
+    second: InjuryKO1
+  - first:
+      74: 7400160
+    second: InjuryKO2
+  - first:
+      74: 7400162
+    second: InjuryKO3
+  - first:
+      74: 7400164
+    second: CoverCrouchJumpUp
+  - first:
+      74: 7400166
+    second: Drop
+  - first:
+      74: 7400168
+    second: Tpose
+  - first:
+      74: 7400170
+    second: TurnR
+  - first:
+      74: 7400172
+    second: TurnL
+  - first:
+      74: 7400174
+    second: UseWeaponBox
+  - first:
+      74: 7400176
+    second: DeathIdle1
+  - first:
+      74: 7400178
+    second: DeathIdle2
+  - first:
+      74: 7400180
+    second: DeathIdle3
+  - first:
+      74: 7400182
+    second: CoverCrouchThrowLeft 1
+  - first:
+      74: 7400184
+    second: CoverCrouchThrowLeft 2
+  - first:
+      74: 7400186
+    second: IdleReloadSMG
+  - first:
+      74: 7400188
+    second: CoverCrouchStrafeRight
+  - first:
+      74: 7400190
+    second: CoverStandStrafeRight
+  - first:
+      74: 7400192
+    second: CoverCrouchLeaveHit
+  - first:
+      74: 7400194
+    second: CoverStandLeaveHit
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -176,11 +498,17 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: "Invalid copied Avatar Rig Configuration:\n\tNo human bone found.
-      Ensure both rig type match\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'IdleThrow' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Lgadgetholder' has translation animation
+      that will be discarded.\n\t'Rweaponholder' has translation animation that will
+      be discarded.\n\nClip 'RunThrow' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'Lgadgetholder' has translation animation that will be discarded.\n\t'Rweaponholder'
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -196,6 +524,7 @@ ModelImporter:
     - serializedVersion: 16
       name: InjuryIdleFront1
       takeName: InjuryIdleFront1
+      internalID: 0
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -224,6 +553,7 @@ ModelImporter:
     - serializedVersion: 16
       name: InjuryIdleFront3
       takeName: InjuryIdleFront3
+      internalID: 0
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -252,6 +582,7 @@ ModelImporter:
     - serializedVersion: 16
       name: InjuryIdleFront2
       takeName: InjuryIdleFront2
+      internalID: 0
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -283,6 +614,8 @@ ModelImporter:
     globalScale: 0.01
     meshCompression: 3
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -290,10 +623,13 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
@@ -305,10 +641,16 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 4
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips:
+  - 84c603902b19b432f9e77023aefee7bc
+  - 0ac143aeb04e44f8b8fdc1c67e3d6d52
+  - 3f4aebb26a6404c0ba0599cde5d9ee59
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: pelvis
       humanName: Hips
@@ -671,14 +1013,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.01
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
