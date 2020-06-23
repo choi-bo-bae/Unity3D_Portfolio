@@ -9,6 +9,7 @@ public class EnemyMove : MonoBehaviour
     {
        Move,
        Attack,
+       Damaged,
        Die
     }
 
@@ -19,11 +20,12 @@ public class EnemyMove : MonoBehaviour
     private GameObject target;  //플레이어
     public int hp = 100;    //체력
     private int idx;    //몇 번째 스폰포인트로 갈지 난수로 결정
+    private Animator anim;  //애너미 애니메이션
     #endregion
 
     #region "Move상태에 필요한 변수들"
     public float speed = 20.0f;  // 이동속도
-    public float searchRange = 1.0f;    //탐색 범위
+    public float searchRange = 50.0f;    //탐색 범위
     #endregion
 
     #region "Attack 상태에 필요한 변수들"
@@ -32,17 +34,24 @@ public class EnemyMove : MonoBehaviour
     public float atkTime = 0.5f;    //일정 시간마다 공격하기
     #endregion
 
-  
+    #region "Damaged에 필요한 변수들"
+
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
         state = EnemyState.Move;    //기본적으로 순찰하기
+        //anim.SetTrigger("Move");
         enemyTr = GameObject.FindGameObjectsWithTag("PatrolPoints");    //순찰 포인트 결정
-        target = GameObject.Find("Player");
+        target = GameObject.Find("Player"); //보통 때는 순찰포인트를 향해 가다가 플레이어가 일정범위 이상 들어오면 공격
         idx = Random.Range(0, enemyTr.Length);  //몇 번째 순찰포인트로 갈지 결정
+        anim = GetComponentInChildren<Animator>();
     }
+
+   
 
     // Update is called once per frame
     void Update()
@@ -50,78 +59,9 @@ public class EnemyMove : MonoBehaviour
         ChangeState();
     }
 
-  
-   
-
-    private void Move()
-    {
-        state = EnemyState.Move;
-
-        print(" Distance : " + Vector3.Distance(enemyTr[idx].transform.position, transform.position));  //디스턴스 찍어보기 왜인지 계속 Y값이 15가 나온다.
-
-        if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 10.0f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
-        {
-           
-            idx = Random.Range(0, enemyTr.Length);  //난수 다시 결정
-           
-            Vector3 dir = (enemyTr[idx].transform.position - transform.position).normalized;    //이동
-           
-            cc.SimpleMove(dir * speed);
-        }
-        else                 //순찰포인트를 향해 ㄱㄱ
-        {
-            Vector3 dir = (enemyTr[idx].transform.position - transform.position).normalized;
-            
-            cc.SimpleMove(dir * speed);
-        }
 
 
-        //if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) > 1.0f)            //순찰포인트를 향해 ㄱㄱ
-        //{
-        //    Vector3 dir = (enemyTr[idx].transform.position - transform.position).normalized;
-
-        //    cc.SimpleMove(dir * speed);
-        //}
-
-
-        if (Vector3.Distance(target.transform.position, transform.position) < searchRange)   //탐색 범위 안에 들어오면 원거리에서 공격하기
-        {
-            state = EnemyState.Attack;
-        }
-        
-
-    }
-
-    private void Attack()
-    {
-        state = EnemyState.Attack;
-    }
-
-    IEnumerator Die()
-    {
-        state = EnemyState.Die;
-
-        yield return 0;
-    }
-
-
-
-    public void HitDamage(int damage)
-    {
-        if (state == EnemyState.Die) return;
-
-        if (hp > 0)
-        {
-            hp -= damage;
-        }
-        else
-        {
-            StartCoroutine(Die());
-        }
-    }
-
-
-    private void ChangeState()
+    private void ChangeState()  //상태 변경
     {
         switch (state)
         {
@@ -138,5 +78,81 @@ public class EnemyMove : MonoBehaviour
                 break;
         }
     }
+
+
+    private void Move()
+    {
+        state = EnemyState.Move;
+
+        //anim.SetTrigger("Move");
+
+        if (Vector3.Distance(target.transform.position, transform.position) < searchRange)   //탐색 범위 안에 들어오면 원거리에서 공격하기
+        {
+            state = EnemyState.Attack;
+
+            anim.SetTrigger("Attack");
+        }
+        if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 1.0f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
+        {
+            idx = Random.Range(0, enemyTr.Length);  //난수 다시 결정          
+        }
+        else
+        {
+            Vector3 dir = enemyTr[idx].transform.position - transform.position;    //이동
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
+            dir.Normalize();
+            cc.SimpleMove(dir * speed);
+        }
+    }
+
+    private void Attack()
+    {
+        state = EnemyState.Attack;
+
+        anim.SetTrigger("Attack");
+       
+        Vector3 dir = target.transform.position - transform.position;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
+        dir.Normalize();
+
+    }
+
+
+
+    IEnumerator Die()
+    {
+        state = EnemyState.Die;
+
+        //폭발이펙트
+        //디스트로이
+        yield return 0;
+    }
+
+
+
+    public void HitDamage(int damage)
+    {
+        if (state == EnemyState.Die) return;
+
+        if (hp > 0)
+        {
+            hp -= damage;
+            anim.SetTrigger("Attack");
+        }
+        else
+        {
+            StartCoroutine(Die());
+            anim.SetTrigger("Die");
+        }
+    }
+
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, searchRange);
+    }
+
 
 }

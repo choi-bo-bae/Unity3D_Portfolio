@@ -19,8 +19,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public float jumpPower = 10.0f; //점프 파워
 
     private bool isTouch = false;
-
-
+    
     private float radius;   //조이스틱 배경 반지름
 
     private Vector3 movePosition;   //얼마만큼 움직여라
