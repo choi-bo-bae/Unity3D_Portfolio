@@ -66,6 +66,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     // Update is called once per frame
     void Update()
     {
+        print(h + ", " + v);
 
         changeState();
       
@@ -80,6 +81,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
     }
 
+
     private void changeState()
     {
         switch (state)
@@ -92,6 +94,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 break;
         }
     }
+
 
     private void Idle()
     {
@@ -108,10 +111,9 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
+        
 
-      
-
-        // Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+        //Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         Vector3 moveDir = new Vector3(h, 0, v);
         moveDir.Normalize();
 
@@ -204,5 +206,5 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
        
     }
 
-
+    
 }
