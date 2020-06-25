@@ -31,6 +31,8 @@ public class EnemyMove : MonoBehaviour
     private float rayDis = 10.0f;
     public GameObject bulletEffectFactory;  //총알 이펙트
     private GameObject target;  //플레이어
+    private float curTime = 0.0f;
+    private float atkTime = 1.0f;
     public int hp = 100;    //체력
     #endregion
 
@@ -62,7 +64,7 @@ public class EnemyMove : MonoBehaviour
     {
         ChangeState();
 
-       
+      
     }
 
 
@@ -121,14 +123,19 @@ public class EnemyMove : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
         dir.Normalize();
 
-      
-           
+
+        curTime += Time.deltaTime;
+
+        if (curTime > atkTime)
+        {
+
+
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hitInfo;
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-               
+                print(hitInfo.transform.name);
                 Debug.DrawRay(ray.origin, hitInfo.transform.position - transform.position, Color.blue, 0.3f);
 
                 GameObject bulletEffect = Instantiate(bulletEffectFactory);
@@ -137,17 +144,21 @@ public class EnemyMove : MonoBehaviour
 
                 bulletEffect.transform.forward = hitInfo.normal;
 
-                //if (hitInfo.transform.name.Contains("Player"))
-                //{
-                //    PlayerMove player = hitInfo.collider.gameObject.GetComponent<PlayerMove>();
-                //    //player.HitDamage(10);
-                //}
+                if (hitInfo.transform.name.Contains("Player"))
+                {
+                    PlayerMove player = hitInfo.collider.gameObject.GetComponent<PlayerMove>();
+                    player.HitDamage(10);
+                  
+                }
             }
             else
             {
                 Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
 
             }
+
+            curTime = 0.0f;
+        }
 
     }
 

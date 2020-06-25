@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -58,12 +59,20 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             case PlayerState.Move:
                 Move();
                 break;
+            case PlayerState.Damaged:
+                StartCoroutine(Damaged());
+                break;
         }
     }
+
+   
+   
 
     // Update is called once per frame
     void Update()
     {
+        print(Hp);
+
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
         
@@ -84,25 +93,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         changeState();   
     }
 
-    public void OnJumpButton()
-    {
-        jumpClick = true;
-
-        Jump();
-    }
-    
-    public void Jump()  //점프
-    {
-        jumpClick = true;
-
-        if (jumpCount < 1)
-        {
-            velocityY = jumpPower;
-            jumpCount++;
-        }
-        
-    }
-
+ 
 
     private void Idle()
     {
@@ -169,7 +160,14 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         //캐릭터 컨트롤러를 이용한 충돌처리 중
     }
 
-    
+    IEnumerator Damaged()
+    {
+        state = PlayerState.Damaged;
+        anim.SetTrigger("Damaged");
+
+        yield return 0;
+    }
+
     public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
     {
         Vector2 value = eventData.position - (Vector2)rect_backGround.position;
@@ -196,5 +194,31 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         rect_Joystick.localPosition = Vector3.zero;
         movePosition = Vector3.zero;
     }
-    
+
+    public void OnJumpButton()  //버튼으로 점프
+    {
+        jumpClick = true;
+
+        Jump();
+    }
+
+    public void Jump()  //점프
+    {
+        jumpClick = true;
+
+        if (jumpCount < 1)
+        {
+            velocityY = jumpPower;
+            jumpCount++;
+        }
+
+    }
+
+    public void HitDamage(int value)
+    {
+        Hp -= value;
+        anim.SetTrigger("Damaged");
+    }
+
+
 }
