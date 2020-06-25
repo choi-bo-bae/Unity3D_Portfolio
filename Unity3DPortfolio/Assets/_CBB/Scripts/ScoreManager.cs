@@ -10,7 +10,19 @@ public class ScoreManager : MonoBehaviour
 
     public Text remainTxt;  //남은 적 텍스트
 
-    int remainCount = 10;   //총 10마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
+    private int remainCount = 10;   //총 10마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
+
+    public int RemainCount
+    {
+        get
+        {
+            return remainCount;
+        }
+        set
+        {
+            remainCount = value;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -26,9 +38,9 @@ public class ScoreManager : MonoBehaviour
     }
 
 
-    void remainCounting()
+    public void remainCounting()
     {
-        remainCount--;
+       
         remainTxt.text = "남은 적 : " + remainCount;
     }
 }

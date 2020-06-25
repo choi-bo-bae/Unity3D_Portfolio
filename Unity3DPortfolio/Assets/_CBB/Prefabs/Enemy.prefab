@@ -68,6 +68,7 @@ MonoBehaviour:
   searchRange: 50
   attack: 5
   atkTime: 0.5
+  bulletEffectFactory: {fileID: 100008, guid: 797ba2528f8bbb74285c5635929b3e2b, type: 3}
 --- !u!1001 &1000963656
 PrefabInstance:
   m_ObjectHideFlags: 0

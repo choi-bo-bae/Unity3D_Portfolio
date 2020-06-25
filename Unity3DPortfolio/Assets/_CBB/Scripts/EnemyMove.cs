@@ -16,25 +16,29 @@ public class EnemyMove : MonoBehaviour
     #region "애너미 공통 변수"
     private CharacterController cc; //캐릭터 컨트롤러
     EnemyState state;   //상태
-    private GameObject[] enemyTr;  //애너미의 순찰 포인트
-    private GameObject target;  //플레이어
-    public int hp = 100;    //체력
-    private int idx;    //몇 번째 스폰포인트로 갈지 난수로 결정
     private Animator anim;  //애너미 애니메이션
     #endregion
 
     #region "Move상태에 필요한 변수들"
     public float speed = 20.0f;  // 이동속도
     public float searchRange = 50.0f;    //탐색 범위
+    private GameObject[] enemyTr;  //애너미의 순찰 포인트
+    private int idx;    //몇 번째 스폰포인트로 갈지 난수로 결정
     #endregion
 
     #region "Attack 상태에 필요한 변수들"
     public float attack = 5.0f; //공격력
-    private float curTime = 0.0f;
-    public float atkTime = 0.5f;    //일정 시간마다 공격하기
+    private float rayDis = 10.0f;
+    public GameObject bulletEffectFactory;  //총알 이펙트
+    private GameObject target;  //플레이어
+    public int hp = 100;    //체력
     #endregion
 
     #region "Damaged에 필요한 변수들"
+
+    #endregion
+
+    #region "Die에 필요한 변수들"
 
     #endregion
 
@@ -57,6 +61,8 @@ public class EnemyMove : MonoBehaviour
     void Update()
     {
         ChangeState();
+
+       
     }
 
 
@@ -110,10 +116,38 @@ public class EnemyMove : MonoBehaviour
         state = EnemyState.Attack;
 
         anim.SetTrigger("Attack");
-       
+
         Vector3 dir = target.transform.position - transform.position;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
         dir.Normalize();
+
+      
+           
+            Ray ray = new Ray(transform.position, transform.forward);
+            RaycastHit hitInfo;
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+               
+                Debug.DrawRay(ray.origin, hitInfo.transform.position - transform.position, Color.blue, 0.3f);
+
+                GameObject bulletEffect = Instantiate(bulletEffectFactory);
+
+                bulletEffect.transform.position = hitInfo.point;
+
+                bulletEffect.transform.forward = hitInfo.normal;
+
+                //if (hitInfo.transform.name.Contains("Player"))
+                //{
+                //    PlayerMove player = hitInfo.collider.gameObject.GetComponent<PlayerMove>();
+                //    //player.HitDamage(10);
+                //}
+            }
+            else
+            {
+                Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
+
+            }
 
     }
 
@@ -124,7 +158,12 @@ public class EnemyMove : MonoBehaviour
         state = EnemyState.Die;
 
         //폭발이펙트
+        ScoreManager score = GameObject.Find("ScoreMgr").gameObject.GetComponent<ScoreManager>();
+
+        score.RemainCount--;
         //디스트로이
+
+        Destroy(gameObject, 2.0f);
         yield return 0;
     }
 
