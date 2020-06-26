@@ -18,10 +18,14 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-
-        Fire();
+        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+        if (GunMode.ShotGun.activeSelf == true)
+        {
+            Fire();
+        }
+      
     }
+
 
     public void Fire()
     {
@@ -29,11 +33,9 @@ public class PlayerFire : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-           
-           
-            RaycastHit hitInfo;
 
-           
+            RaycastHit hitInfo;
+            
 
             if (Physics.Raycast(ray, out hitInfo))
             {
@@ -60,10 +62,11 @@ public class PlayerFire : MonoBehaviour
 
         }
        
-           
-        
     }
     
+
+
+
 
 
 }

@@ -11,8 +11,10 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     enum PlayerState
     {
         Idle,
+        KnifeIdle,
         Move,
-        Attack,
+        KnifeModeMove,
+        KnifeAttack,
         Damaged,
         Die
     }
@@ -33,8 +35,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private bool isTouch = false;
     private float radius;   //조이스틱 배경 반지름
     private Vector3 movePosition;   //얼마만큼 움직여라
-    private bool jumpClick = false; //버튼을 눌러 점프했는가
-    private int jumpCount = 0;  //2단점프 까지 가능
+    private int jumpCount = 0;  //1단점프 까지 가능
     [SerializeField] private RectTransform rect_backGround; //조이스틱 배경
     [SerializeField] private RectTransform rect_Joystick;   //조이스틱
    
@@ -51,13 +52,26 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     private void changeState()
     {
+        //PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+        //PlayerChangeWeapon KnifeMode = GetComponent<PlayerChangeWeapon>();
+
+        
         switch (state)
         {
             case PlayerState.Idle:
-                Idle();
+                Idle();            
+                break;
+            case PlayerState.KnifeIdle:
+                KnifeIdle();
                 break;
             case PlayerState.Move:
                 Move();
+                break;
+            case PlayerState.KnifeModeMove:
+                KnifeModeMove();
+                break;
+            case PlayerState.KnifeAttack:
+                KnifeAttack();
                 break;
             case PlayerState.Damaged:
                 StartCoroutine(Damaged());
@@ -65,50 +79,77 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
     }
 
-   
-   
+    
+
 
     // Update is called once per frame
     void Update()
     {
-        print(Hp);
-
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
-        
-        if (Input.GetButtonDown("Jump"))
+       
+        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+        if (GunMode.ShotGun.activeSelf == true)
         {
-               Jump();
+            state = PlayerState.Move;
+            Move();
         }
+        else
+        {
+            state = PlayerState.KnifeModeMove;
+            KnifeModeMove();
+        }
+       
 
+        Jump();
 
         if (h == 0 && v == 0)
         {
             if (isTouch)
             {
-               transform.localPosition += movePosition; //플레이어를 움직여라
+                transform.localPosition += movePosition; //플레이어를 움직여라
             }
         }
 
-        changeState();   
+        changeState();
+
     }
 
- 
+  
+    public void Jump()  //점프
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+             if (jumpCount < 1)
+             {
+                 velocityY = jumpPower;
+                 jumpCount++;
+             }
+        }
+    }
 
     private void Idle()
     {
         anim.SetTrigger("Idle");
 
+       
         if (h != 0 || v != 0)
         {
             state = PlayerState.Move;
-            Move();
+           
         }
     }
 
-    private void Move()
+    private void KnifeIdle()
     {
-        
+        anim.SetTrigger("KnifeIdle");
+    }
+
+    //=======================================================================================================여기까지 아이들 상태
+
+    private void Move() //건 모드 --> 애니메이션 때문에 나눴음
+    {
+
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
 
         //Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         Vector3 moveDir = new Vector3(h, 0, v);
@@ -135,9 +176,17 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
         if (h == 0 && v == 0)
         {
+            PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+            if (GunMode.ShotGun.activeSelf == true)
+            {
+                state = PlayerState.Idle;
+            }
+            else
+            {
+
+                state = PlayerState.KnifeIdle;
+            }
            
-            state = PlayerState.Idle;
-            anim.SetTrigger("Idle");
         }
 
         //여기까지 이동
@@ -160,6 +209,58 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         //캐릭터 컨트롤러를 이용한 충돌처리 중
     }
 
+
+    private void KnifeModeMove()    //나이프 모드
+    {
+        anim.SetTrigger("KnifeModeMove");
+
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
+
+        //Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+        Vector3 moveDir = new Vector3(h, 0, v);
+        moveDir.Normalize();
+
+        moveDir = Camera.main.transform.TransformDirection(moveDir);
+
+        if (h == 0 && v == 0)
+        {
+            PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+            if (GunMode.ShotGun.activeSelf == true)
+            {
+                state = PlayerState.Idle;
+            }
+            else
+            {
+
+                state = PlayerState.KnifeIdle;
+            }
+
+        }
+
+        //여기까지 이동
+        if (cc.collisionFlags == CollisionFlags.Below)
+        {
+            velocityY = 0;
+            jumpCount = 0;
+        }
+        else
+        {
+            velocityY += gravity * Time.deltaTime;
+            moveDir.y = velocityY;
+        }
+
+        //충돌처리와 중력 적용
+
+
+        cc.Move(moveDir * speed * Time.deltaTime);
+
+        //캐릭터 컨트롤러를 이용한 충돌처리 중
+    }
+
+
+    //========================================================================여기까지 이동
+
     IEnumerator Damaged()
     {
         state = PlayerState.Damaged;
@@ -167,6 +268,16 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
         yield return 0;
     }
+
+    public void KnifeAttack()
+    {
+        anim.SetTrigger("KnifeAttack");
+        
+    }
+
+
+
+
 
     public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
     {
@@ -195,24 +306,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         movePosition = Vector3.zero;
     }
 
-    public void OnJumpButton()  //버튼으로 점프
-    {
-        jumpClick = true;
-
-        Jump();
-    }
-
-    public void Jump()  //점프
-    {
-        jumpClick = true;
-
-        if (jumpCount < 1)
-        {
-            velocityY = jumpPower;
-            jumpCount++;
-        }
-
-    }
+   
 
     public void HitDamage(int value)
     {

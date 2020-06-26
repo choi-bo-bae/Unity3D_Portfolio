@@ -34,37 +34,34 @@ public class EnemyMove : MonoBehaviour
     private float curTime = 0.0f;
     private float atkTime = 1.0f;
     public int hp = 100;    //체력
+    public GameObject gunFlashFactory; //플래시
+    public GameObject flashPoint;  //빛나는 포인트
     #endregion
 
-    #region "Damaged에 필요한 변수들"
 
+    #region "Attack상태에 필요한 변수들"
+    public GameObject firePoint;
     #endregion
-
-    #region "Die에 필요한 변수들"
-
-    #endregion
-
 
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
         state = EnemyState.Move;    //기본적으로 순찰하기
-        //anim.SetTrigger("Move");
         enemyTr = GameObject.FindGameObjectsWithTag("PatrolPoints");    //순찰 포인트 결정
         target = GameObject.Find("Player"); //보통 때는 순찰포인트를 향해 가다가 플레이어가 일정범위 이상 들어오면 공격
         idx = Random.Range(0, enemyTr.Length);  //몇 번째 순찰포인트로 갈지 결정
         anim = GetComponentInChildren<Animator>();
+      
     }
 
-   
+
 
     // Update is called once per frame
     void Update()
     {
         ChangeState();
 
-      
     }
 
 
@@ -90,17 +87,15 @@ public class EnemyMove : MonoBehaviour
 
     private void Move()
     {
-        state = EnemyState.Move;
-
-        //anim.SetTrigger("Move");
+       
+        anim.SetTrigger("Move");
 
         if (Vector3.Distance(target.transform.position, transform.position) < searchRange)   //탐색 범위 안에 들어오면 원거리에서 공격하기
         {
             state = EnemyState.Attack;
 
-            anim.SetTrigger("Attack");
         }
-        if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 1.0f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
+        else if (Vector3.Distance(enemyTr[idx].transform.position, transform.position) <= 1.0f)   //순찰 포인트와 애너미가 가까워지면 다음 순찰포인트를 고른다.
         {
             idx = Random.Range(0, enemyTr.Length);  //난수 다시 결정          
         }
@@ -115,34 +110,44 @@ public class EnemyMove : MonoBehaviour
 
     private void Attack()
     {
-        state = EnemyState.Attack;
-
+       
         anim.SetTrigger("Attack");
+
+
+        if (Vector3.Distance(target.transform.position, transform.position) > searchRange)   //탐색 범위 안에 들어오면 원거리에서 공격하기
+        {
+            state = EnemyState.Move;
+
+        }
 
         Vector3 dir = target.transform.position - transform.position;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
         dir.Normalize();
 
-
+       
         curTime += Time.deltaTime;
 
         if (curTime > atkTime)
         {
-
-
-            Ray ray = new Ray(transform.position, transform.forward);
+            
+            Ray ray = new Ray(firePoint.transform.position, firePoint.transform.forward);
             RaycastHit hitInfo;
+
+            GameObject flash = Instantiate(gunFlashFactory);//총이 발사되는 부분에서 플래시 터지는 이펙트
+            gunFlashFactory.transform.position = flashPoint.transform.position;
+            //gunFlashFactory.SetActive(true);
+
+            //gunFlashFactory.transform.forward = flashPoint.transform.forward;
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-                print(hitInfo.transform.name);
-                Debug.DrawRay(ray.origin, hitInfo.transform.position - transform.position, Color.blue, 0.3f);
+               
+                Debug.DrawRay(ray.origin, hitInfo.point - firePoint.transform.position, Color.blue, 0.3f);
 
-                GameObject bulletEffect = Instantiate(bulletEffectFactory);
-
+                GameObject bulletEffect = Instantiate(bulletEffectFactory);//총알이(레이가) 부딫히는 부분 이펙트
                 bulletEffect.transform.position = hitInfo.point;
-
                 bulletEffect.transform.forward = hitInfo.normal;
+                
 
                 if (hitInfo.transform.name.Contains("Player"))
                 {
@@ -156,6 +161,7 @@ public class EnemyMove : MonoBehaviour
                 Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
 
             }
+              
 
             curTime = 0.0f;
         }
@@ -166,15 +172,14 @@ public class EnemyMove : MonoBehaviour
 
     IEnumerator Die()
     {
-        state = EnemyState.Die;
-
-        //폭발이펙트
+       
+        anim.SetTrigger("Die");
         ScoreManager score = GameObject.Find("ScoreMgr").gameObject.GetComponent<ScoreManager>();
 
         score.RemainCount--;
-        //디스트로이
 
         Destroy(gameObject, 2.0f);
+        //디스트로이
         yield return 0;
     }
 
@@ -187,12 +192,12 @@ public class EnemyMove : MonoBehaviour
         if (hp > 0)
         {
             hp -= damage;
-            anim.SetTrigger("Attack");
+           
         }
         else
         {
             StartCoroutine(Die());
-            anim.SetTrigger("Die");
+            state = EnemyState.Die;
         }
     }
 

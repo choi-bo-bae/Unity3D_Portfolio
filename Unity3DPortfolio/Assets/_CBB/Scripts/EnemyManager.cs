@@ -31,13 +31,13 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (max < 1)    //10마리. 전부 부숴야 동료에게 갈 수 있도록 설정하기
+        if (max < 1)    //20마리. 전부 부숴야 동료에게 갈 수 있도록 설정하기
         {
             curTime += Time.deltaTime;
 
             if (curTime > spawnTime)
             {
-                spawnTime = Random.Range(3.0f, 5.0f);   //스폰 시간 다양하게 랜덤으로
+                spawnTime = Random.Range(3.0f, 10.0f);   //스폰 시간 다양하게 랜덤으로
 
                 GameObject enemy = Instantiate(enemyFactory);   //적 프리팹 데려오기
 
@@ -47,6 +47,7 @@ public class EnemyManager : MonoBehaviour
 
                 curTime = 0.0f;
             }
+
         }
     }
 
