@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PatrolPoints
   - Enemy
+  - FxTemporaire
+  - Sword
   layers:
   - Default
   - TransparentFX

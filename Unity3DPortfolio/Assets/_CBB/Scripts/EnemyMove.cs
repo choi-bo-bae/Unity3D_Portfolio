@@ -62,6 +62,7 @@ public class EnemyMove : MonoBehaviour
     {
         ChangeState();
 
+        print(hp);
     }
 
 

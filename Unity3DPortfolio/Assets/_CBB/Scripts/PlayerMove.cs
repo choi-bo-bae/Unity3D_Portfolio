@@ -156,8 +156,8 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         moveDir = Camera.main.transform.TransformDirection(moveDir);
 
         PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        if (GunMode.ShotGun.activeSelf == true)
-        {
+        //if (GunMode.ShotGun.activeSelf == true)
+        //{
             if (v >= 0.1f)
             {
                 anim.SetTrigger("FMove");
@@ -174,7 +174,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             {
                 anim.SetTrigger("LMove");
             }
-        }
+       // }
 
         if (h == 0 && v == 0)
         {
@@ -282,18 +282,23 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             anim.SetTrigger("KnifeAttack");
         }
+
         
     }
 
-    private void OnTriggerEnter(GameObject hitChild, GameObject hitOther)   //나이프로 뚜까
+
+    private void OnTriggerEnter(Collider child, Collider other) //자식 객체 중 나이프가 애너미와 충돌 했을 때 애너미 체력 감소
     {
-        if(hitOther.transform.name.Contains("Enemy"))
+        if (state == PlayerState.KnifeAttack)
         {
-            EnemyMove enemy = hitOther.gameObject.GetComponent<EnemyMove>();
-            enemy.HitDamage(10);
-        }
+            if (other.gameObject.tag == "Enemy" && child.gameObject.tag == "Sword")
+            {
+                EnemyMove enemy = other.gameObject.GetComponent<EnemyMove>();
+                enemy.HitDamage(10);
+            }
+        }  
     }
-  
+
 
     public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
     {
@@ -314,6 +319,9 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         isTouch = true;
 
     }
+
+
+
 
     public void OnPointerUp(PointerEventData eventData) //조이스틱 조작 종료
     {

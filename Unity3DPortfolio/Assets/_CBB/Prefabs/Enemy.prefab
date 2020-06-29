@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 1788240390358061434}
   - component: {fileID: 4245706667351150578}
   - component: {fileID: 4356790826698352607}
+  - component: {fileID: 7798431994133218010}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -133,6 +134,20 @@ MonoBehaviour:
   gunFlashFactory: {fileID: 100006, guid: bf55efc2034b3b64ba2f51a497c6d224, type: 3}
   flashPoint: {fileID: 1713920965}
   firePoint: {fileID: 2110035079}
+--- !u!136 &7798431994133218010
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788240390358061318}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!1001 &1000963656
 PrefabInstance:
   m_ObjectHideFlags: 0

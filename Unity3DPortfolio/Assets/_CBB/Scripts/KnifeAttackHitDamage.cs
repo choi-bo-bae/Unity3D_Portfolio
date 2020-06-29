@@ -20,9 +20,8 @@ public class KnifeAttackHitDamage : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerMove player = this.transform.parent.GetComponent<PlayerMove>().on
-     
-    }
+ 
+  
+
+   
 }
