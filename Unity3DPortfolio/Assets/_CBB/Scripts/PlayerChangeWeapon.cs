@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayerChangeWeapon : MonoBehaviour
 {
@@ -25,13 +26,14 @@ public class PlayerChangeWeapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ChangeWeapon();
+        
     }
-
+    
     public void ChangeWeapon()
     {
+       
         weapon++;
-        if(weapon % 2 != 0)
+        if (weapon % 2 != 0)
         {
             Gun.enabled = false;
             Knife.enabled = true;
@@ -49,5 +51,7 @@ public class PlayerChangeWeapon : MonoBehaviour
             Dagger.SetActive(false);
             //무기 총 도출
         }
+       
     }
+
 }

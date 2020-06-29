@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
@@ -38,7 +39,8 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private int jumpCount = 0;  //1단점프 까지 가능
     [SerializeField] private RectTransform rect_backGround; //조이스틱 배경
     [SerializeField] private RectTransform rect_Joystick;   //조이스틱
-   
+
+  
 
     //Start is called before the first frame update
     void Start()
@@ -47,7 +49,6 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
        cc = GetComponent<CharacterController>();
        anim = GetComponentInChildren<Animator>();
        state = PlayerState.Idle;   //기본적으로 아이들 상태
-       
     }
 
     private void changeState()
@@ -86,20 +87,12 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     void Update()
     {
        
-        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        if (GunMode.ShotGun.activeSelf == true)
+        Move();
+        
+        if (Input.GetButtonDown("Jump"))
         {
-            state = PlayerState.Move;
-            Move();
+            Jump();
         }
-        else
-        {
-            state = PlayerState.KnifeModeMove;
-            KnifeModeMove();
-        }
-       
-
-        Jump();
 
         if (h == 0 && v == 0)
         {
@@ -110,20 +103,19 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
 
         changeState();
-
+        
     }
 
   
     public void Jump()  //점프
     {
-        if (Input.GetButtonDown("Jump"))
+       
+        if (jumpCount < 1)
         {
-             if (jumpCount < 1)
-             {
-                 velocityY = jumpPower;
-                 jumpCount++;
-             }
+            velocityY = jumpPower;
+            jumpCount++;
         }
+       
     }
 
     private void Idle()
@@ -141,6 +133,12 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private void KnifeIdle()
     {
         anim.SetTrigger("KnifeIdle");
+
+        if (h != 0 || v != 0)
+        {
+            state = PlayerState.KnifeModeMove;
+
+        }
     }
 
     //=======================================================================================================여기까지 아이들 상태
@@ -157,26 +155,30 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
         moveDir = Camera.main.transform.TransformDirection(moveDir);
 
-        if (v >= 0.1f)
+        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+        if (GunMode.ShotGun.activeSelf == true)
         {
-            anim.SetTrigger("FMove");
-        }
-        if (v <= -0.1f)
-        {
-            anim.SetTrigger("BMove");
-        }
-        if (h >= 0.1f)
-        {
-            anim.SetTrigger("RMove");
-        }
-        if (h <= -0.1f)
-        {
-            anim.SetTrigger("LMove");
+            if (v >= 0.1f)
+            {
+                anim.SetTrigger("FMove");
+            }
+            if (v <= -0.1f)
+            {
+                anim.SetTrigger("BMove");
+            }
+            if (h >= 0.1f)
+            {
+                anim.SetTrigger("RMove");
+            }
+            if (h <= -0.1f)
+            {
+                anim.SetTrigger("LMove");
+            }
         }
 
         if (h == 0 && v == 0)
         {
-            PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+           
             if (GunMode.ShotGun.activeSelf == true)
             {
                 state = PlayerState.Idle;
@@ -256,8 +258,12 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         cc.Move(moveDir * speed * Time.deltaTime);
 
         //캐릭터 컨트롤러를 이용한 충돌처리 중
+
+
     }
 
+
+    
 
     //========================================================================여기까지 이동
 
@@ -271,13 +277,23 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void KnifeAttack()
     {
-        anim.SetTrigger("KnifeAttack");
+        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+        if (GunMode.ShotGun.activeSelf == false)
+        {
+            anim.SetTrigger("KnifeAttack");
+        }
         
     }
 
-
-
-
+    private void OnTriggerEnter(GameObject hitChild, GameObject hitOther)   //나이프로 뚜까
+    {
+        if(hitOther.transform.name.Contains("Enemy"))
+        {
+            EnemyMove enemy = hitOther.gameObject.GetComponent<EnemyMove>();
+            enemy.HitDamage(10);
+        }
+    }
+  
 
     public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
     {

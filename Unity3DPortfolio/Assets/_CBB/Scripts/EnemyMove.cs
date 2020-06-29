@@ -135,9 +135,14 @@ public class EnemyMove : MonoBehaviour
 
             GameObject flash = Instantiate(gunFlashFactory);//총이 발사되는 부분에서 플래시 터지는 이펙트
             gunFlashFactory.transform.position = flashPoint.transform.position;
-            //gunFlashFactory.SetActive(true);
+            gunFlashFactory.transform.forward = flashPoint.transform.forward;
+            gunFlashFactory.SetActive(true);
+           
 
-            //gunFlashFactory.transform.forward = flashPoint.transform.forward;
+            if(gunFlashFactory.transform.position != flashPoint.transform.position)
+            {
+                gunFlashFactory.SetActive(false);
+            }
 
             if (Physics.Raycast(ray, out hitInfo))
             {
@@ -164,6 +169,7 @@ public class EnemyMove : MonoBehaviour
               
 
             curTime = 0.0f;
+            
         }
 
     }
