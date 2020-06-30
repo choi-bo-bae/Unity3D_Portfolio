@@ -17,6 +17,7 @@ public class EnemyMove : MonoBehaviour
     private CharacterController cc; //캐릭터 컨트롤러
     EnemyState state;   //상태
     private Animator anim;  //애너미 애니메이션
+    public GameObject rifle;
     #endregion
 
     #region "Move상태에 필요한 변수들"
@@ -52,7 +53,7 @@ public class EnemyMove : MonoBehaviour
         target = GameObject.Find("Player"); //보통 때는 순찰포인트를 향해 가다가 플레이어가 일정범위 이상 들어오면 공격
         idx = Random.Range(0, enemyTr.Length);  //몇 번째 순찰포인트로 갈지 결정
         anim = GetComponentInChildren<Animator>();
-      
+       
     }
 
 
@@ -135,11 +136,14 @@ public class EnemyMove : MonoBehaviour
             Ray ray = new Ray(firePoint.transform.position, firePoint.transform.forward);
             RaycastHit hitInfo;
 
-          
+            
             GameObject flash = Instantiate(gunFlashFactory);//총이 발사되는 부분에서 플래시 터지는 이펙트
-            gunFlashFactory.transform.position = flashPoint.transform.position;
-            gunFlashFactory.transform.forward = flashPoint.transform.forward;
-            //gunFlashFactory.SetActive(true);
+            //gunFlashFactory.transform.position = rifle.transform.position + new Vector3(0, 0, 3);
+            gunFlashFactory.transform.position = rifle.transform.position;
+            gunFlashFactory.transform.forward = rifle.transform.forward;
+            //gunFlashFactory.transform.position = flashPoint.transform.position;
+           // gunFlashFactory.transform.forward = gameObject.transform.forward;
+            gunFlashFactory.SetActive(true);
 
             if (Physics.Raycast(ray, out hitInfo))
             {
@@ -168,9 +172,14 @@ public class EnemyMove : MonoBehaviour
             curTime = 0.0f;
             
         }
-        else
+
+        if (curTime == 0.0f)
         {
-            gunFlashFactory.SetActive(false);
+
+            if (gunFlashFactory.activeSelf == true)
+            {
+                gunFlashFactory.SetActive(false);
+            }
         }
 
 

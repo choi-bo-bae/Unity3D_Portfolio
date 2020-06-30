@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713920965}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.234, y: 1.415, z: 1.13}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.011187888, y: -0.637958, z: 0.76822984, w: -0.052031487}
+  m_LocalPosition: {x: 1.5955442, y: 0.70708174, z: 0.1836227}
+  m_LocalScale: {x: 0.9942511, y: 0.81584495, z: 1.2273513}
   m_Children: []
   m_Father: {fileID: 1788240390358061434}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -192.3, y: -232.7, z: 10.195001}
 --- !u!1 &2110035079
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,12 +126,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dc79c11de045d64f954cccfe3012a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rifle: {fileID: 1000929512}
   speed: 20
   searchRange: 50
   attack: 5
   bulletEffectFactory: {fileID: 100008, guid: 797ba2528f8bbb74285c5635929b3e2b, type: 3}
   hp: 100
-  gunFlashFactory: {fileID: 100006, guid: bf55efc2034b3b64ba2f51a497c6d224, type: 3}
+  gunFlashFactory: {fileID: 100006, guid: cacc84185ce7567489099bb5f86fef0a, type: 3}
   flashPoint: {fileID: 1713920965}
   firePoint: {fileID: 2110035079}
 --- !u!136 &2549170682510244710
@@ -157,7 +158,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 2d02fd77a820e476e8c9047328380cd9, type: 3}
       propertyPath: m_Name
-      value: w_rifle03
+      value: Rifle
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2d02fd77a820e476e8c9047328380cd9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -217,6 +218,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d02fd77a820e476e8c9047328380cd9, type: 3}
+--- !u!1 &1000929512 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 2d02fd77a820e476e8c9047328380cd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000963656}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1647903853
 PrefabInstance:
   m_ObjectHideFlags: 0

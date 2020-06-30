@@ -86,24 +86,26 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     // Update is called once per frame
     void Update()
     {
-       
 
-        Move();
-        
-        if (Input.GetButtonDown("Jump"))
+        if (state != PlayerState.Die)
         {
-            Jump();
-        }
+            Move();
 
-        if (h == 0 && v == 0)
-        {
-            if (isTouch)
+            if (Input.GetButtonDown("Jump"))
             {
-                transform.localPosition += movePosition; //플레이어를 움직여라
+                Jump();
             }
-        }
 
-        changeState();
+            if (h == 0 && v == 0)
+            {
+                if (isTouch)
+                {
+                    transform.localPosition += movePosition; //플레이어를 움직여라
+                }
+            }
+
+            changeState();
+        }
         
     }
 
@@ -342,8 +344,23 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void HitDamage(int value)
     {
-        Hp -= value;
-        anim.SetTrigger("Damaged");
+        if (Hp > 0)
+        {
+            Hp -= value;
+            anim.SetTrigger("Damaged");
+        }
+        else
+        {
+            state = PlayerState.Die;
+            StartCoroutine(Dead());
+        }
+
+    }
+
+    IEnumerator Dead()
+    {
+        anim.SetTrigger("Die");
+        yield return null;
     }
 
 

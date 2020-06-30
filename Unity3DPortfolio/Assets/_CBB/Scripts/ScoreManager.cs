@@ -43,7 +43,9 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         light.enabled = false;
-        
+
+        GameObject colleague = GameObject.Find("Colleague");
+        colleague.GetComponentInChildren<Light>().enabled = false;
     }
 
 
@@ -67,17 +69,21 @@ public class ScoreManager : MonoBehaviour
             goalTxt.color = Color.white;
             goalTxt.text += " ( 목표 달성 ) ";
             remainCheck = true;
-           
+            GameObject colleague = GameObject.Find("Colleague");
+            colleague.GetComponentInChildren<Light>().enabled = true;
         }
 
         if(remainCount <= 19 && noticeCheck == false)
         {
-            //light.enabled = true;
+            light.enabled = true;
        
             NoticeTxt.text = " 적이 플레이어의 탈옥을 알아차렸습니다! ";
 
             NoticeTxt.color = Color.Lerp(NoticeTxt.color, zeroColor , fadeTime * Time.deltaTime);
-            noticeCheck = true;
+            if (NoticeTxt.color.a <= 0)
+            {
+                noticeCheck = true;
+            }
         }
 
       

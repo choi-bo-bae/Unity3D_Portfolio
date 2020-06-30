@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - FxTemporaire
   - Sword
+  - MuzzleFlash
   layers:
   - Default
   - TransparentFX

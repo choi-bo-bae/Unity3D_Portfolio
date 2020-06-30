@@ -9627,7 +9627,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100004}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
@@ -9707,11 +9707,11 @@ GameObject:
   - component: {fileID: 19900004}
   m_Layer: 0
   m_Name: MuzzleFlash
-  m_TagString: Untagged
+  m_TagString: MuzzleFlash
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &400006
 Transform:
   m_ObjectHideFlags: 0
@@ -9719,8 +9719,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100006}
-  m_LocalRotation: {x: -0.00018921484, y: 0.99973214, z: 0.0088446, w: 0.021387529}
-  m_LocalPosition: {x: 68.14097, y: 13.928412, z: 105.168205}
+  m_LocalRotation: {x: -0.0030381684, y: 0.96673846, z: 0.0114959795, w: 0.25549057}
+  m_LocalPosition: {x: 66.45893, y: 14.03498, z: 126.55382}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 400002}
@@ -9728,7 +9728,7 @@ Transform:
   - {fileID: 400000}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.064, y: 95.65, z: 0}
 --- !u!198 &19800004
 ParticleSystem:
   m_ObjectHideFlags: 0
