@@ -14,35 +14,38 @@ public class PlayerFire : MonoBehaviour
     public GameObject firePos;   //총열
 
     private int attackPower = 10;
+
     
 
     // Update is called once per frame
     void Update()
     {
-      
-      Fire();
+        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+       if(GunMode.ShotGun.activeSelf == true)
+        {
+            Fire();
+        }
+
       
     }
 
 
     public void Fire()
     {
-        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        if (GunMode.ShotGun.activeSelf == true)
-        {
+      
             Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
 
             if (Input.GetMouseButtonDown(0))
             {
 
                 RaycastHit hitInfo;
-
+                
 
                 if (Physics.Raycast(ray, out hitInfo))
                 {
-                    print(hitInfo.transform.name);
-                   // Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
-                    Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  
+
+                    Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
+                    //Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  
 
                     GameObject bulletEffect = Instantiate(bulletEffectFactory);
 
@@ -63,7 +66,6 @@ public class PlayerFire : MonoBehaviour
                 }
 
             }
-        }
        
     }
     

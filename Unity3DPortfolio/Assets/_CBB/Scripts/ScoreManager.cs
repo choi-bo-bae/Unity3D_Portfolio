@@ -12,7 +12,21 @@ public class ScoreManager : MonoBehaviour
 
     public Text goalTxt;    //게임 목표 텍스트
 
+    public Text NoticeTxt;  //알아차림 텍스트
+
+    public Color zeroColor;
+
     private int remainCount = 1;   //총 20마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
+
+    public Light light;
+
+    float fadeTime = 1.5f;
+
+    private bool remainCheck = false;
+
+    private bool noticeCheck = false;
+
+    
 
     public int RemainCount
     {
@@ -26,13 +40,19 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-   
+    private void Start()
+    {
+        light.enabled = false;
+        
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-        //적이 파괴될 때 라는 조건 넣기
-        remainCounting();
+       
+       remainCounting();
+       
     }
 
 
@@ -41,12 +61,32 @@ public class ScoreManager : MonoBehaviour
        
         remainTxt.text = "남은 적 : " + remainCount;
 
-        if(remainCount == 0)
+
+        if(remainCount == 0 && remainCheck == false)
         {
             goalTxt.color = Color.white;
             goalTxt.text += " ( 목표 달성 ) ";
-            Destroy(gameObject);
+            remainCheck = true;
+           
         }
+
+        if(remainCount <= 19 && noticeCheck == false)
+        {
+            //light.enabled = true;
+       
+            NoticeTxt.text = " 적이 플레이어의 탈옥을 알아차렸습니다! ";
+
+            NoticeTxt.color = Color.Lerp(NoticeTxt.color, zeroColor , fadeTime * Time.deltaTime);
+            noticeCheck = true;
+        }
+
+      
     }
+
+
+
+
+
+
 
 }

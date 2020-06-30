@@ -62,7 +62,7 @@ public class EnemyMove : MonoBehaviour
     {
         ChangeState();
 
-        print(hp);
+        print(curTime);
     }
 
 
@@ -122,8 +122,9 @@ public class EnemyMove : MonoBehaviour
         }
 
         Vector3 dir = target.transform.position - transform.position;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
         dir.Normalize();
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 5.0f * Time.deltaTime);
+        
 
        
         curTime += Time.deltaTime;
@@ -134,16 +135,11 @@ public class EnemyMove : MonoBehaviour
             Ray ray = new Ray(firePoint.transform.position, firePoint.transform.forward);
             RaycastHit hitInfo;
 
+          
             GameObject flash = Instantiate(gunFlashFactory);//총이 발사되는 부분에서 플래시 터지는 이펙트
             gunFlashFactory.transform.position = flashPoint.transform.position;
             gunFlashFactory.transform.forward = flashPoint.transform.forward;
-            gunFlashFactory.SetActive(true);
-           
-
-            if(gunFlashFactory.transform.position != flashPoint.transform.position)
-            {
-                gunFlashFactory.SetActive(false);
-            }
+            //gunFlashFactory.SetActive(true);
 
             if (Physics.Raycast(ray, out hitInfo))
             {
@@ -172,6 +168,12 @@ public class EnemyMove : MonoBehaviour
             curTime = 0.0f;
             
         }
+        else
+        {
+            gunFlashFactory.SetActive(false);
+        }
+
+
 
     }
 

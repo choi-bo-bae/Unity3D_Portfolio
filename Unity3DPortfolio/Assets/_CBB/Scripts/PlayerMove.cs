@@ -87,6 +87,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     void Update()
     {
        
+
         Move();
         
         if (Input.GetButtonDown("Jump"))
@@ -156,8 +157,8 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         moveDir = Camera.main.transform.TransformDirection(moveDir);
 
         PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        //if (GunMode.ShotGun.activeSelf == true)
-        //{
+        if (GunMode.ShotGun.activeSelf == true)
+        {
             if (v >= 0.1f)
             {
                 anim.SetTrigger("FMove");
@@ -174,7 +175,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             {
                 anim.SetTrigger("LMove");
             }
-       // }
+        }
 
         if (h == 0 && v == 0)
         {
@@ -281,23 +282,30 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         if (GunMode.ShotGun.activeSelf == false)
         {
             anim.SetTrigger("KnifeAttack");
+            state = PlayerState.KnifeAttack;
         }
+        else
+        {
+            PlayerFire fire = GetComponent<PlayerFire>();
+            fire.Fire();
+        }
+        
+    }
+    
 
+    public void OnTriggerEnter(Collider enemy)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
+    {
+
+        if (state == PlayerState.KnifeAttack)
+        {
+            
+             EnemyMove enemyDamage = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyMove>();
+             enemyDamage.HitDamage(10);
+            
+        }
         
     }
 
-
-    private void OnTriggerEnter(Collider child, Collider other) //자식 객체 중 나이프가 애너미와 충돌 했을 때 애너미 체력 감소
-    {
-        if (state == PlayerState.KnifeAttack)
-        {
-            if (other.gameObject.tag == "Enemy" && child.gameObject.tag == "Sword")
-            {
-                EnemyMove enemy = other.gameObject.GetComponent<EnemyMove>();
-                enemy.HitDamage(10);
-            }
-        }  
-    }
 
 
     public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
