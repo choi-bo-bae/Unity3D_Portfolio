@@ -13,6 +13,7 @@ public class NewStart : MonoBehaviour
 
     public static NewStart Instance;
 
+   
 
     private void Awake()
     {

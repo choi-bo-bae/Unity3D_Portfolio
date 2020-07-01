@@ -28,7 +28,7 @@ public class EnemyMove : MonoBehaviour
     #endregion
 
     #region "Attack 상태에 필요한 변수들"
-    public float attack = 5.0f; //공격력
+    public int attack = 10; //공격력
     private float rayDis = 10.0f;
     public GameObject bulletEffectFactory;  //총알 이펙트
     private GameObject target;  //플레이어
@@ -37,12 +37,10 @@ public class EnemyMove : MonoBehaviour
     public int hp = 100;    //체력
     public GameObject gunFlashFactory; //플래시
     public GameObject flashPoint;  //빛나는 포인트
-    #endregion
-
-
-    #region "Attack상태에 필요한 변수들"
     public GameObject firePoint;
     #endregion
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +61,7 @@ public class EnemyMove : MonoBehaviour
     {
         ChangeState();
 
-        print(curTime);
+        
     }
 
 
@@ -138,12 +136,9 @@ public class EnemyMove : MonoBehaviour
 
             
             GameObject flash = Instantiate(gunFlashFactory);//총이 발사되는 부분에서 플래시 터지는 이펙트
-            //gunFlashFactory.transform.position = rifle.transform.position + new Vector3(0, 0, 3);
-            gunFlashFactory.transform.position = rifle.transform.position;
-            gunFlashFactory.transform.forward = rifle.transform.forward;
-            //gunFlashFactory.transform.position = flashPoint.transform.position;
-           // gunFlashFactory.transform.forward = gameObject.transform.forward;
-            gunFlashFactory.SetActive(true);
+            gunFlashFactory.transform.position = flashPoint.transform.position;
+            gunFlashFactory.transform.forward = flashPoint.transform.forward;
+           
 
             if (Physics.Raycast(ray, out hitInfo))
             {
@@ -158,7 +153,7 @@ public class EnemyMove : MonoBehaviour
                 if (hitInfo.transform.name.Contains("Player"))
                 {
                     PlayerMove player = hitInfo.collider.gameObject.GetComponent<PlayerMove>();
-                    player.HitDamage(10);
+                    player.HitDamage(attack);
                   
                 }
             }
@@ -173,14 +168,7 @@ public class EnemyMove : MonoBehaviour
             
         }
 
-        if (curTime == 0.0f)
-        {
-
-            if (gunFlashFactory.activeSelf == true)
-            {
-                gunFlashFactory.SetActive(false);
-            }
-        }
+       
 
 
 

@@ -20,52 +20,48 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-       if(GunMode.ShotGun.activeSelf == true)
-        {
+      
             Fire();
-        }
-
       
     }
 
 
     public void Fire()
     {
-      
-            Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
+       
+        Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
 
-            if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            RaycastHit hitInfo;
+
+
+            if (Physics.Raycast(ray, out hitInfo))
             {
 
-                RaycastHit hitInfo;
-                
+                Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
+                //Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  
 
-                if (Physics.Raycast(ray, out hitInfo))
+                GameObject bulletEffect = Instantiate(bulletEffectFactory);
+
+                bulletEffect.transform.position = hitInfo.point;
+
+                bulletEffect.transform.forward = hitInfo.normal;
+
+                if (hitInfo.transform.name.Contains("Enemy"))
                 {
-
-                    Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
-                    //Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  
-
-                    GameObject bulletEffect = Instantiate(bulletEffectFactory);
-
-                    bulletEffect.transform.position = hitInfo.point;
-
-                    bulletEffect.transform.forward = hitInfo.normal;
-
-                    if (hitInfo.transform.name.Contains("Enemy"))
-                    {
-                        EnemyMove enemy = hitInfo.collider.gameObject.GetComponent<EnemyMove>();
-                        enemy.HitDamage(attackPower);
-                    }
+                    EnemyMove enemy = hitInfo.collider.gameObject.GetComponent<EnemyMove>();
+                    enemy.HitDamage(attackPower);
                 }
-                else
-                {
-                    Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
-
-                }
-
             }
+            else
+            {
+                Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
+            }
+
+
+        }
        
     }
     

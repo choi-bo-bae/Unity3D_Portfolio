@@ -9,6 +9,7 @@ TagManager:
   - FxTemporaire
   - Sword
   - MuzzleFlash
+  - Rifle
   layers:
   - Default
   - TransparentFX

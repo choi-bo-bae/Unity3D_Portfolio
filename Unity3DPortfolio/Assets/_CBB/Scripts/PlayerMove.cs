@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
-public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 
     enum PlayerState
@@ -20,15 +20,19 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         Die
     }
 
-    //공통
+    #region "공통"
     private CharacterController cc;     //캐릭터 컨트롤러
     private float gravity = -20f;   //중력
     private float velocityY = 0.0f;    //낙하 속도 
     public float Hp = 100.0f;   //체력
     PlayerState state;  //상태 쳌크
     private Animator anim;  //플레이어 애니메이션
+    public Vector2 margin;  //뷰포트 좌표로 이동
+    public VariableJoystick joyStick; //조이스틱
+    #endregion
 
-    //Move
+
+    #region "Move"
     private float h;
     private float v;
     public float speed = 25.0f; //이동 속도
@@ -39,8 +43,13 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private int jumpCount = 0;  //1단점프 까지 가능
     [SerializeField] private RectTransform rect_backGround; //조이스틱 배경
     [SerializeField] private RectTransform rect_Joystick;   //조이스틱
+    #endregion
 
-  
+    #region "Die"
+    public Text retryTxt;
+    public GameObject retry;
+    public GameObject quit;
+    #endregion
 
     //Start is called before the first frame update
     void Start()
@@ -49,14 +58,16 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
        cc = GetComponent<CharacterController>();
        anim = GetComponentInChildren<Animator>();
        state = PlayerState.Idle;   //기본적으로 아이들 상태
+       retryTxt.enabled = false;
+       retry.SetActive(false);
+       quit.SetActive(false);
+       margin = new Vector2(0.08f, 0.05f);
     }
 
+   
     private void changeState()
     {
-        //PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        //PlayerChangeWeapon KnifeMode = GetComponent<PlayerChangeWeapon>();
-
-        
+       
         switch (state)
         {
             case PlayerState.Idle:
@@ -77,6 +88,9 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             case PlayerState.Damaged:
                 StartCoroutine(Damaged());
                 break;
+            case PlayerState.Die:
+                StartCoroutine(Dead());
+                break;
         }
     }
 
@@ -90,23 +104,17 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         if (state != PlayerState.Die)
         {
             Move();
+            //JoystickMove();
 
             if (Input.GetButtonDown("Jump"))
             {
                 Jump();
             }
-
-            if (h == 0 && v == 0)
-            {
-                if (isTouch)
-                {
-                    transform.localPosition += movePosition; //플레이어를 움직여라
-                }
-            }
-
+            
             changeState();
         }
-        
+
+      
     }
 
   
@@ -146,13 +154,44 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     //=======================================================================================================여기까지 아이들 상태
 
+    public void OnPointerDown(PointerEventData eventData)   //조이스틱 클릭 함
+    {
+        isTouch = true;
+
+    }
+
+    public void OnPointerUp(PointerEventData eventData) //조이스틱 조작 종료
+    {
+        isTouch = false;
+
+    }
+
+    //private void JoystickMove()
+    //{
+       
+
+    //    Move();
+
+    //   //transform.Translate(h * speed * Time.deltaTime, 0.0f, v * speed * Time.deltaTime);
+
+    //}
+
+    //===========================================================================================================조이스틱 무빙
+
     private void Move() //건 모드 --> 애니메이션 때문에 나눴음
     {
+        if (isTouch == false)
+        {
+            h = Input.GetAxis("Horizontal");
+            v = Input.GetAxis("Vertical");
+        }
 
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
+        if (isTouch == true)
+        {
+            h = joyStick.Horizontal;
+            v = joyStick.Vertical;
+        }
 
-        //Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         Vector3 moveDir = new Vector3(h, 0, v);
         moveDir.Normalize();
 
@@ -219,10 +258,14 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     {
         anim.SetTrigger("KnifeModeMove");
 
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
+        if (isTouch == false)
+        {
+            h = Input.GetAxis("Horizontal");
+            v = Input.GetAxis("Vertical");
+        }
 
-        //Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+
+
         Vector3 moveDir = new Vector3(h, 0, v);
         moveDir.Normalize();
 
@@ -266,7 +309,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     }
 
 
-    
+
 
     //========================================================================여기까지 이동
 
@@ -280,65 +323,41 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void KnifeAttack()
     {
-        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        if (GunMode.ShotGun.activeSelf == false)
-        {
-            anim.SetTrigger("KnifeAttack");
-            state = PlayerState.KnifeAttack;
-        }
-        else
-        {
-            PlayerFire fire = GetComponent<PlayerFire>();
-            fire.Fire();
-        }
-        
+       
+        anim.SetTrigger("KnifeAttack");
+        state = PlayerState.KnifeAttack;
+       
     }
     
 
     public void OnTriggerEnter(Collider enemy)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
     {
-
+       
         if (state == PlayerState.KnifeAttack)
         {
-            
-             EnemyMove enemyDamage = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyMove>();
-             enemyDamage.HitDamage(10);
-            
+
+            EnemyMove enemyDamage = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyMove>();
+            enemyDamage.HitDamage(10);
+
         }
-        
+       
     }
 
 
+    //public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
+    //{
+    //    Vector2 value = eventData.position - (Vector2)rect_backGround.position;
 
-    public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
-    {
-        Vector2 value = eventData.position - (Vector2)rect_backGround.position;
+    //    value = Vector2.ClampMagnitude(value, radius);
 
-        value = Vector2.ClampMagnitude(value, radius);
+    //    rect_Joystick.localPosition = value;
 
-        rect_Joystick.localPosition = value;
+    //    float distance = Vector2.Distance(rect_backGround.position, rect_Joystick.position) / radius;
+    //    value = value.normalized;
+    //    movePosition = new Vector3(value.x * speed * distance * Time.deltaTime, 0f, value.y * speed * distance * Time.deltaTime);
 
-        float distance = Vector2.Distance(rect_backGround.position, rect_Joystick.position) / radius;
-        value = value.normalized;
-        movePosition = new Vector3(value.x * speed * distance * Time.deltaTime, 0f, value.y * speed * distance * Time.deltaTime);
+    //}
 
-    }
-
-    public void OnPointerDown(PointerEventData eventData)   //조이스틱 클릭 함
-    {
-        isTouch = true;
-
-    }
-
-
-
-
-    public void OnPointerUp(PointerEventData eventData) //조이스틱 조작 종료
-    {
-        isTouch = false;
-        rect_Joystick.localPosition = Vector3.zero;
-        movePosition = Vector3.zero;
-    }
 
    
 
@@ -353,14 +372,25 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             state = PlayerState.Die;
             StartCoroutine(Dead());
+            anim.SetTrigger("Die");
         }
 
     }
 
     IEnumerator Dead()
     {
+        state = PlayerState.Die;
         anim.SetTrigger("Die");
-        yield return null;
+
+        retryTxt.enabled = true;
+        retry.SetActive(true);
+        quit.SetActive(true);
+
+        StopAllCoroutines();
+
+        cc.enabled = false;
+
+        yield return 0;
     }
 
 
