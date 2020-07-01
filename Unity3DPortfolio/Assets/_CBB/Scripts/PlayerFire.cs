@@ -20,8 +20,11 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
+        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
+        if (GunMode.ShotGun.activeSelf == true)
+        {
             Fire();
+        }
       
     }
 

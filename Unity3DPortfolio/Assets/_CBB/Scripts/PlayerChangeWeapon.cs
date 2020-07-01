@@ -12,6 +12,8 @@ public class PlayerChangeWeapon : MonoBehaviour
     public Image Knife;
     public GameObject ShotGun;
     public GameObject Dagger;
+    public Text Fire;
+    public Text Attack;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,9 @@ public class PlayerChangeWeapon : MonoBehaviour
 
         ShotGun.SetActive(true);
         Dagger.SetActive(false);
+
+        Fire.enabled = true;
+        Attack.enabled = false;
     }
 
     // Update is called once per frame
@@ -41,6 +46,8 @@ public class PlayerChangeWeapon : MonoBehaviour
             ShotGun.SetActive(false);
             Dagger.SetActive(true);
             //무기 대거 도출
+            Fire.enabled = false;
+            Attack.enabled = true;
         }
         else
         {
@@ -50,6 +57,8 @@ public class PlayerChangeWeapon : MonoBehaviour
             ShotGun.SetActive(true);
             Dagger.SetActive(false);
             //무기 총 도출
+            Fire.enabled = true;
+            Attack.enabled = false;
         }
        
     }

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
-public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class PlayerMove : MonoBehaviour
 {
 
     enum PlayerState
@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     PlayerState state;  //상태 쳌크
     private Animator anim;  //플레이어 애니메이션
     public Vector2 margin;  //뷰포트 좌표로 이동
-    public VariableJoystick joyStick; //조이스틱
+    public VariableJoystick joyStick; //조이스틱 public? private?
     #endregion
 
 
@@ -37,12 +37,8 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float v;
     public float speed = 25.0f; //이동 속도
     public float jumpPower = 10.0f; //점프 파워
-    private bool isTouch = false;
-    private float radius;   //조이스틱 배경 반지름
     private Vector3 movePosition;   //얼마만큼 움직여라
     private int jumpCount = 0;  //1단점프 까지 가능
-    [SerializeField] private RectTransform rect_backGround; //조이스틱 배경
-    [SerializeField] private RectTransform rect_Joystick;   //조이스틱
     #endregion
 
     #region "Die"
@@ -54,7 +50,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     //Start is called before the first frame update
     void Start()
     {
-       radius = rect_backGround.rect.width * 0.5f;
+      
        cc = GetComponent<CharacterController>();
        anim = GetComponentInChildren<Animator>();
        state = PlayerState.Idle;   //기본적으로 아이들 상태
@@ -104,7 +100,7 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (state != PlayerState.Die)
         {
             Move();
-            //JoystickMove();
+            
 
             if (Input.GetButtonDown("Jump"))
             {
@@ -114,7 +110,9 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             changeState();
         }
 
+        
       
+       
     }
 
   
@@ -154,43 +152,21 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //=======================================================================================================여기까지 아이들 상태
 
-    public void OnPointerDown(PointerEventData eventData)   //조이스틱 클릭 함
-    {
-        isTouch = true;
 
-    }
-
-    public void OnPointerUp(PointerEventData eventData) //조이스틱 조작 종료
-    {
-        isTouch = false;
-
-    }
-
-    //private void JoystickMove()
-    //{
-       
-
-    //    Move();
-
-    //   //transform.Translate(h * speed * Time.deltaTime, 0.0f, v * speed * Time.deltaTime);
-
-    //}
-
-    //===========================================================================================================조이스틱 무빙
-
+   
     private void Move() //건 모드 --> 애니메이션 때문에 나눴음
     {
-        if (isTouch == false)
-        {
+       
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
-        }
-
-        if (isTouch == true)
+        
+        if (h == 0 && v == 0)
         {
             h = joyStick.Horizontal;
             v = joyStick.Vertical;
         }
+
+
 
         Vector3 moveDir = new Vector3(h, 0, v);
         moveDir.Normalize();
@@ -258,13 +234,16 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         anim.SetTrigger("KnifeModeMove");
 
-        if (isTouch == false)
-        {
+        
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
+       
+
+        if (h == 0 && v == 0)
+        {
+            h = joyStick.Horizontal;
+            v = joyStick.Vertical;
         }
-
-
 
         Vector3 moveDir = new Vector3(h, 0, v);
         moveDir.Normalize();
@@ -342,21 +321,6 @@ public class PlayerMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
        
     }
-
-
-    //public void OnDrag(PointerEventData eventData)  //조이스틱 조작 중
-    //{
-    //    Vector2 value = eventData.position - (Vector2)rect_backGround.position;
-
-    //    value = Vector2.ClampMagnitude(value, radius);
-
-    //    rect_Joystick.localPosition = value;
-
-    //    float distance = Vector2.Distance(rect_backGround.position, rect_Joystick.position) / radius;
-    //    value = value.normalized;
-    //    movePosition = new Vector3(value.x * speed * distance * Time.deltaTime, 0f, value.y * speed * distance * Time.deltaTime);
-
-    //}
 
 
    
