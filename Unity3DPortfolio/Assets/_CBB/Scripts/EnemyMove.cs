@@ -19,6 +19,9 @@ public class EnemyMove : MonoBehaviour
     EnemyState state;   //상태
     private Animator anim;  //애너미 애니메이션
     public GameObject rifle;
+    public AudioClip enemyFire;
+    public AudioClip enemyScream;
+    private AudioSource audio;
     #endregion
 
     #region "Move상태에 필요한 변수들"
@@ -59,6 +62,7 @@ public class EnemyMove : MonoBehaviour
         target = GameObject.Find("Player"); //보통 때는 순찰포인트를 향해 가다가 플레이어가 일정범위 이상 들어오면 공격
         idx = Random.Range(0, enemyTr.Length);  //몇 번째 순찰포인트로 갈지 결정
         anim = GetComponentInChildren<Animator>();
+        audio = GetComponent<AudioSource>();
 
         setHp();
         
@@ -153,6 +157,7 @@ public class EnemyMove : MonoBehaviour
 
         if (curTime > atkTime)
         {
+            audio.PlayOneShot(enemyFire);
 
             Ray ray = new Ray(firePoint.transform.position, firePoint.transform.forward);
             RaycastHit hitInfo;
@@ -204,6 +209,7 @@ public class EnemyMove : MonoBehaviour
         anim.SetTrigger("Die");
         ScoreManager score = GameObject.Find("ScoreMgr").gameObject.GetComponent<ScoreManager>();
 
+        audio.PlayOneShot(enemyScream);
         score.RemainCount--;
         
         Destroy(gameObject, 2.0f);

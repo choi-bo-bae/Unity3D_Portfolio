@@ -12,6 +12,7 @@ public struct PlayerSfx
 {
     public AudioClip walk;
     public AudioClip knife;
+    public AudioClip die;
     
 }
 
@@ -379,6 +380,8 @@ public class PlayerMove : MonoBehaviour
             state = PlayerState.Die;
             StartCoroutine(Dead());
             anim.SetTrigger("Die");
+           
+
         }
 
     }
@@ -388,6 +391,8 @@ public class PlayerMove : MonoBehaviour
     {
         state = PlayerState.Die;
         anim.SetTrigger("Die");
+
+        audio.PlayOneShot(playerSfx.die);
 
         retryTxt.enabled = true;
         retry.SetActive(true);

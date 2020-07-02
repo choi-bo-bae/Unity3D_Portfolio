@@ -13,6 +13,7 @@ public class NewStart : MonoBehaviour
 
     public static NewStart Instance;
 
+    private AudioSource audio;
    
 
     private void Awake()
@@ -41,12 +42,13 @@ public class NewStart : MonoBehaviour
         
         NewStartPressed.enabled = false;
 
+        audio = GetComponent<AudioSource>();
        
     }
 
     void Update()
     {
-        
+       
     }
 
 
