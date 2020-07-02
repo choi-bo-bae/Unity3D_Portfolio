@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyMove : MonoBehaviour
 {
@@ -34,12 +35,19 @@ public class EnemyMove : MonoBehaviour
     private GameObject target;  //플레이어
     private float curTime = 0.0f;
     private float atkTime = 1.0f;
-    public int hp = 100;    //체력
     public GameObject gunFlashFactory; //플래시
     public GameObject flashPoint;  //빛나는 포인트
     public GameObject firePoint;
     #endregion
 
+    #region "Damaged"
+    public int hp = 100;    //체력
+    public GameObject hpBarPrefab;
+    public Vector3 hpBarOffset = new Vector3(0, 2.2f, 0);
+    private Canvas canvas;
+    private GameObject hpBar;
+    private Image hpBarImage;
+    #endregion
 
 
     // Start is called before the first frame update
@@ -51,8 +59,24 @@ public class EnemyMove : MonoBehaviour
         target = GameObject.Find("Player"); //보통 때는 순찰포인트를 향해 가다가 플레이어가 일정범위 이상 들어오면 공격
         idx = Random.Range(0, enemyTr.Length);  //몇 번째 순찰포인트로 갈지 결정
         anim = GetComponentInChildren<Animator>();
-       
+
+        setHp();
+        
     }
+
+    void setHp()
+    {
+        if (gameObject != null)
+        {
+            canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+            hpBar = Instantiate<GameObject>(hpBarPrefab, canvas.transform);
+            hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
+            var _hpBar = hpBar.GetComponent<EnemyHpBar>();
+            _hpBar.targetTr = this.gameObject.transform;
+            _hpBar.offset = hpBarOffset;
+        }
+    }
+
 
 
 
@@ -60,7 +84,6 @@ public class EnemyMove : MonoBehaviour
     void Update()
     {
         ChangeState();
-
         
     }
 
@@ -130,31 +153,31 @@ public class EnemyMove : MonoBehaviour
 
         if (curTime > atkTime)
         {
-            
+
             Ray ray = new Ray(firePoint.transform.position, firePoint.transform.forward);
             RaycastHit hitInfo;
 
-            
+
             GameObject flash = Instantiate(gunFlashFactory);//총이 발사되는 부분에서 플래시 터지는 이펙트
             gunFlashFactory.transform.position = flashPoint.transform.position;
             gunFlashFactory.transform.forward = flashPoint.transform.forward;
-           
+
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-               
+
                 Debug.DrawRay(ray.origin, hitInfo.point - firePoint.transform.position, Color.blue, 0.3f);
 
                 GameObject bulletEffect = Instantiate(bulletEffectFactory);//총알이(레이가) 부딫히는 부분 이펙트
                 bulletEffect.transform.position = hitInfo.point;
                 bulletEffect.transform.forward = hitInfo.normal;
-                
+
 
                 if (hitInfo.transform.name.Contains("Player"))
                 {
                     PlayerMove player = hitInfo.collider.gameObject.GetComponent<PlayerMove>();
                     player.HitDamage(attack);
-                  
+
                 }
             }
             else
@@ -162,14 +185,12 @@ public class EnemyMove : MonoBehaviour
                 Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
 
             }
-              
+
 
             curTime = 0.0f;
-            
+
         }
-
        
-
 
 
     }
@@ -178,12 +199,13 @@ public class EnemyMove : MonoBehaviour
 
     IEnumerator Die()
     {
-       
+        Destroy(hpBar);
+
         anim.SetTrigger("Die");
         ScoreManager score = GameObject.Find("ScoreMgr").gameObject.GetComponent<ScoreManager>();
 
         score.RemainCount--;
-
+        
         Destroy(gameObject, 2.0f);
         //디스트로이
         yield return 0;
@@ -198,12 +220,16 @@ public class EnemyMove : MonoBehaviour
         if (hp > 0)
         {
             hp -= damage;
-           
+            hpBarImage.fillAmount = hp * 0.01f;
         }
-        else
+        if(hp <= 0)
         {
+            hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;
+           
+
             StartCoroutine(Die());
             state = EnemyState.Die;
+            
         }
     }
 

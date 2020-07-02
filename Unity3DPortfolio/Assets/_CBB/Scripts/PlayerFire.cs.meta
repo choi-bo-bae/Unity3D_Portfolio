@@ -3,7 +3,10 @@ guid: cb3a014f8b1f9e24d936730c0ece09af
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bulletEffectFactory: {instanceID: 0}
+  - firePos: {instanceID: 0}
+  - fireAudio: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

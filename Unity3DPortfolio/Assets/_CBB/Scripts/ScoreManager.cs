@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
 
     public Color zeroColor;
 
-    private int remainCount = 1;   //총 20마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
+    public int remainCount = 1;   //총 20마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
 
     public Light light;
 
@@ -88,8 +88,6 @@ public class ScoreManager : MonoBehaviour
 
       
     }
-
-
 
 
 

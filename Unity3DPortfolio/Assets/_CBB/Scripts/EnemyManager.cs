@@ -15,9 +15,14 @@ public class EnemyManager : MonoBehaviour
 
     private int max = 0;    //최대로 필드에 나와있을 갯수
 
+    public AudioClip spawn;
+
+    private AudioSource audio;
+
     private void Start()
     {
         target = GameObject.Find("Player");
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -31,12 +36,14 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (max < 1)    //20마리. 전부 부숴야 동료에게 갈 수 있도록 설정하기
+        if (max < 5)    //20마리. 전부 부숴야 동료에게 갈 수 있도록 설정하기
         {
             curTime += Time.deltaTime;
 
             if (curTime > spawnTime)
             {
+                audio.PlayOneShot(spawn);
+
                 spawnTime = Random.Range(3.0f, 10.0f);   //스폰 시간 다양하게 랜덤으로
 
                 GameObject enemy = Instantiate(enemyFactory);   //적 프리팹 데려오기

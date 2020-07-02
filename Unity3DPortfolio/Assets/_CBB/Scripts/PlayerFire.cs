@@ -15,15 +15,25 @@ public class PlayerFire : MonoBehaviour
 
     private int attackPower = 10;
 
-    
+
+    public AudioClip fire;
+
+    AudioSource audio;
+
+
+    private void Start()
+    {
+        audio = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        if (GunMode.ShotGun.activeSelf == true)
+       
+        if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)  //건 모드인지 체크
         {
             Fire();
+           
         }
       
     }
@@ -31,39 +41,47 @@ public class PlayerFire : MonoBehaviour
 
     public void Fire()
     {
+
        
-        Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
 
-        if (Input.GetMouseButtonDown(0))
+        if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)
         {
+           
 
-            RaycastHit hitInfo;
+            Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
 
-
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Input.GetMouseButtonDown(0))
             {
+                audio.PlayOneShot(fire);
 
-                Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
-                //Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  
+                RaycastHit hitInfo;
 
-                GameObject bulletEffect = Instantiate(bulletEffectFactory);
 
-                bulletEffect.transform.position = hitInfo.point;
-
-                bulletEffect.transform.forward = hitInfo.normal;
-
-                if (hitInfo.transform.name.Contains("Enemy"))
+                if (Physics.Raycast(ray, out hitInfo))
                 {
-                    EnemyMove enemy = hitInfo.collider.gameObject.GetComponent<EnemyMove>();
-                    enemy.HitDamage(attackPower);
+
+                    Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
+                    //Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  ?????????????????????????????
+
+                    GameObject bulletEffect = Instantiate(bulletEffectFactory);
+
+                    bulletEffect.transform.position = hitInfo.point;
+
+                    bulletEffect.transform.forward = hitInfo.normal;
+
+                    if (hitInfo.transform.name.Contains("Enemy"))
+                    {
+                        EnemyMove enemy = hitInfo.collider.gameObject.GetComponent<EnemyMove>();
+                        enemy.HitDamage(attackPower);
+                    }
                 }
-            }
-            else
-            {
-                Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
-            }
+                else
+                {
+                    Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
+                }
 
 
+            }
         }
        
     }

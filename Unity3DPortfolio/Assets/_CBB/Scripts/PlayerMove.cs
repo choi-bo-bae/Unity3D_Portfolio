@@ -6,10 +6,20 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
+
+[System.Serializable]
+public struct PlayerSfx
+{
+    public AudioClip walk;
+    public AudioClip knife;
+    
+}
+
+
 public class PlayerMove : MonoBehaviour
 {
 
-    enum PlayerState
+    public enum PlayerState
     {
         Idle,
         KnifeIdle,
@@ -25,10 +35,12 @@ public class PlayerMove : MonoBehaviour
     private float gravity = -20f;   //중력
     private float velocityY = 0.0f;    //낙하 속도 
     public float Hp = 100.0f;   //체력
-    PlayerState state;  //상태 쳌크
+    public PlayerState state;  //상태 쳌크
     private Animator anim;  //플레이어 애니메이션
     public Vector2 margin;  //뷰포트 좌표로 이동
     public VariableJoystick joyStick; //조이스틱 public? private?
+    public GameObject enemy;
+    public PlayerSfx playerSfx;
     #endregion
 
 
@@ -39,12 +51,18 @@ public class PlayerMove : MonoBehaviour
     public float jumpPower = 10.0f; //점프 파워
     private Vector3 movePosition;   //얼마만큼 움직여라
     private int jumpCount = 0;  //1단점프 까지 가능
+    AudioSource audio;
+    private float footStepDelay = 0.0f;
     #endregion
 
     #region "Die"
     public Text retryTxt;
     public GameObject retry;
     public GameObject quit;
+    #endregion
+
+    #region "Danaged"
+    public Image hpBar;
     #endregion
 
     //Start is called before the first frame update
@@ -58,6 +76,7 @@ public class PlayerMove : MonoBehaviour
        retry.SetActive(false);
        quit.SetActive(false);
        margin = new Vector2(0.08f, 0.05f);
+        audio = GetComponent<AudioSource>();
     }
 
    
@@ -73,12 +92,15 @@ public class PlayerMove : MonoBehaviour
                 KnifeIdle();
                 break;
             case PlayerState.Move:
+                
                 Move();
                 break;
             case PlayerState.KnifeModeMove:
+               
                 KnifeModeMove();
                 break;
             case PlayerState.KnifeAttack:
+                
                 KnifeAttack();
                 break;
             case PlayerState.Damaged:
@@ -96,6 +118,8 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        hpBar.fillAmount = Hp * 0.01f;
+       
 
         if (state != PlayerState.Die)
         {
@@ -110,12 +134,9 @@ public class PlayerMove : MonoBehaviour
             changeState();
         }
 
-        
-      
-       
     }
 
-  
+
     public void Jump()  //점프
     {
        
@@ -167,14 +188,23 @@ public class PlayerMove : MonoBehaviour
         }
 
 
-
         Vector3 moveDir = new Vector3(h, 0, v);
         moveDir.Normalize();
 
         moveDir = Camera.main.transform.TransformDirection(moveDir);
 
-        PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-        if (GunMode.ShotGun.activeSelf == true)
+        if (h != 0 || v != 0)
+        {
+            footStepDelay += Time.deltaTime;
+            if (footStepDelay >= 0.7f)
+            {
+                audio.PlayOneShot(playerSfx.walk);
+                footStepDelay = 0.0f;
+            }
+        }
+
+
+        if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)  //건 모드인지 체크
         {
             if (v >= 0.1f)
             {
@@ -193,11 +223,12 @@ public class PlayerMove : MonoBehaviour
                 anim.SetTrigger("LMove");
             }
         }
+        
 
         if (h == 0 && v == 0)
         {
-           
-            if (GunMode.ShotGun.activeSelf == true)
+
+            if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)  //건 모드인지 체크
             {
                 state = PlayerState.Idle;
             }
@@ -250,10 +281,19 @@ public class PlayerMove : MonoBehaviour
 
         moveDir = Camera.main.transform.TransformDirection(moveDir);
 
+        if (h != 0 || v != 0)
+        {
+            footStepDelay += Time.deltaTime;
+            if (footStepDelay >= 0.7f)
+            {
+                audio.PlayOneShot(playerSfx.walk);
+                footStepDelay = 0.0f;
+            }
+        }
+
         if (h == 0 && v == 0)
         {
-            PlayerChangeWeapon GunMode = GetComponent<PlayerChangeWeapon>();
-            if (GunMode.ShotGun.activeSelf == true)
+            if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)  //건 모드인지 체크
             {
                 state = PlayerState.Idle;
             }
@@ -305,20 +345,21 @@ public class PlayerMove : MonoBehaviour
        
         anim.SetTrigger("KnifeAttack");
         state = PlayerState.KnifeAttack;
-       
+        audio.PlayOneShot(playerSfx.knife);
     }
     
 
-    public void OnTriggerEnter(Collider enemy)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
+    public void OnTriggerEnter(Collider other)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
     {
-       
-        if (state == PlayerState.KnifeAttack)
+        
+        if (state == PlayerState.KnifeAttack && other.gameObject.tag == "Enemy")
         {
 
-            EnemyMove enemyDamage = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyMove>();
+            EnemyMove enemyDamage = enemy.GetComponent<EnemyMove>();
             enemyDamage.HitDamage(10);
 
         }
+       
        
     }
 
@@ -332,7 +373,8 @@ public class PlayerMove : MonoBehaviour
             Hp -= value;
             anim.SetTrigger("Damaged");
         }
-        else
+
+        if (Hp <= 0)
         {
             state = PlayerState.Die;
             StartCoroutine(Dead());
@@ -340,6 +382,7 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
+
 
     IEnumerator Dead()
     {

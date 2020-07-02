@@ -14,7 +14,11 @@ public class PlayerRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Rotate();
+        PlayerMove state = GameObject.Find("Player").GetComponent<PlayerMove>();
+        if (state.state != PlayerMove.PlayerState.Die)
+        {
+            Rotate();
+        }
     }
 
     private void Rotate()
