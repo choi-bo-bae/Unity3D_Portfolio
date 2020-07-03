@@ -36,7 +36,7 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (max < 5)    //20마리. 전부 부숴야 동료에게 갈 수 있도록 설정하기
+        if (max < 20)    //20마리. 전부 부숴야 동료에게 갈 수 있도록 설정하기
         {
             curTime += Time.deltaTime;
 

@@ -136,7 +136,7 @@ MonoBehaviour:
   gunFlashFactory: {fileID: 100006, guid: cacc84185ce7567489099bb5f86fef0a, type: 3}
   flashPoint: {fileID: 1713920965}
   firePoint: {fileID: 2110035079}
-  hp: 100
+  hp: 0
   hpBarPrefab: {fileID: 6181824411130604963, guid: 7c22223e80281cf47a82ccdda3dfdb4d,
     type: 3}
   hpBarOffset: {x: 0, y: 2.2, z: 0}

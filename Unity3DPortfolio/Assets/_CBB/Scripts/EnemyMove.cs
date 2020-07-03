@@ -222,12 +222,14 @@ public class EnemyMove : MonoBehaviour
     public void HitDamage(int damage)
     {
         if (state == EnemyState.Die) return;
+        
 
         if (hp > 0)
         {
             hp -= damage;
             hpBarImage.fillAmount = hp * 0.01f;
         }
+
         if(hp <= 0)
         {
             hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;

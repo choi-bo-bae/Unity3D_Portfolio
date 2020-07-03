@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
 
     public Color zeroColor;
 
-    public int remainCount = 1;   //총 20마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
+    public int remainCount = 20;   //총 20마리의 적이 있고 다 부숴야 동료에게 갈 수 있음.
 
     public Light light;
 
@@ -67,7 +67,7 @@ public class ScoreManager : MonoBehaviour
         if(remainCount == 0 && remainCheck == false)
         {
             goalTxt.color = Color.white;
-            goalTxt.text += " ( 목표 달성 ) ";
+            goalTxt.text += " (목표 달성)";
             remainCheck = true;
             GameObject colleague = GameObject.Find("Colleague");
             colleague.GetComponentInChildren<Light>().enabled = true;
@@ -80,6 +80,7 @@ public class ScoreManager : MonoBehaviour
             NoticeTxt.text = " 적이 플레이어의 탈옥을 알아차렸습니다! ";
 
             NoticeTxt.color = Color.Lerp(NoticeTxt.color, zeroColor , fadeTime * Time.deltaTime);
+
             if (NoticeTxt.color.a <= 0)
             {
                 noticeCheck = true;

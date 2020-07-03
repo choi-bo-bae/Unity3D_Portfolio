@@ -14,7 +14,8 @@ public class NewStart : MonoBehaviour
     public static NewStart Instance;
 
     private AudioSource audio;
-   
+
+    private float startFade = 1f;
 
     private void Awake()
     {
@@ -46,11 +47,6 @@ public class NewStart : MonoBehaviour
        
     }
 
-    void Update()
-    {
-       
-    }
-
 
     public void ChangeScene()
     {
@@ -67,6 +63,15 @@ public class NewStart : MonoBehaviour
     {
         SceneManager.LoadScene(value);
     }
+
+    private void Update()
+    {
+        Color fadeColor = Button.GetComponent<Image>().color;
+
+        fadeColor.a = Mathf.PingPong(Time.time, startFade);
+        Button.GetComponent<Image>().color = fadeColor;
+    }
+
 
 
 }
