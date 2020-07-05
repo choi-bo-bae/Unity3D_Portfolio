@@ -351,18 +351,18 @@ public class PlayerMove : MonoBehaviour
     }
     
 
-    public void OnTriggerEnter(Collider other)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
-    {
-        Debug.Log(" 플레이어가 나이프어택상태가 아님!");
+    //public void OnTriggerEnter(Collider other)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
+    //{
+    //    Debug.Log(" 플레이어가 나이프어택상태가 아님!");
 
-        if (state != PlayerState.KnifeAttack) return;
+    //    if (state != PlayerState.KnifeAttack) return;
 
-        Debug.Log(" 피 깎기");
-        EnemyMove enemyDamage = enemy.GetComponent<EnemyMove>();
-            enemyDamage.HitDamage(10);
+    //    Debug.Log(" 피 깎기");
+    //    EnemyMove enemyDamage = enemy.GetComponent<EnemyMove>();
+    //    enemyDamage.HitDamage(10);
 
 
-    }
+    //}
 
 
    

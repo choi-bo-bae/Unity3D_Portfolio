@@ -88,7 +88,9 @@ public class EnemyMove : MonoBehaviour
     void Update()
     {
         ChangeState();
-        
+
+        print(hp);
+        print(hpBarImage.fillAmount);
     }
 
 

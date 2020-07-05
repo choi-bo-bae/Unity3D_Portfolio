@@ -61,8 +61,7 @@ public class PlayerFire : MonoBehaviour
                 {
 
                     Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
-                    //Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.blue, 0.3f);  ?????????????????????????????
-
+                   
                     GameObject bulletEffect = Instantiate(bulletEffectFactory);
 
                     bulletEffect.transform.position = hitInfo.point;
