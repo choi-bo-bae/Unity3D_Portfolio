@@ -140,11 +140,13 @@ public class PlayerMove : MonoBehaviour
 
     public void Jump()  //점프
     {
-       
-        if (jumpCount < 1)
-        {
-            velocityY = jumpPower;
-            jumpCount++;
+        if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+        { 
+            if (jumpCount < 1)
+            {
+                velocityY = jumpPower;
+                jumpCount++;
+            }
         }
        
     }
@@ -344,10 +346,12 @@ public class PlayerMove : MonoBehaviour
 
     public void KnifeAttack()
     {
-       
-        anim.SetTrigger("KnifeAttack");
-        state = PlayerState.KnifeAttack;
-        audio.PlayOneShot(playerSfx.knife);
+        if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+        {
+            anim.SetTrigger("KnifeAttack");
+            state = PlayerState.KnifeAttack;
+            audio.PlayOneShot(playerSfx.knife);
+        }
     }
     
 

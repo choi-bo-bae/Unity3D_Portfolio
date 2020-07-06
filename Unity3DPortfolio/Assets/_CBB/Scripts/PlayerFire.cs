@@ -46,40 +46,42 @@ public class PlayerFire : MonoBehaviour
 
         if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)
         {
-           
 
-            Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
-
-            if (Input.GetMouseButtonDown(0))
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
-                audio.PlayOneShot(fire);
+                Ray ray = new Ray(firePos.transform.position, firePos.transform.forward);
 
-                RaycastHit hitInfo;
-
-
-                if (Physics.Raycast(ray, out hitInfo))
+                if (Input.GetMouseButtonDown(0))
                 {
+                    audio.PlayOneShot(fire);
 
-                    Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
-                   
-                    GameObject bulletEffect = Instantiate(bulletEffectFactory);
+                    RaycastHit hitInfo;
 
-                    bulletEffect.transform.position = hitInfo.point;
 
-                    bulletEffect.transform.forward = hitInfo.normal;
-
-                    if (hitInfo.transform.name.Contains("Enemy"))
+                    if (Physics.Raycast(ray, out hitInfo))
                     {
-                        EnemyMove enemy = hitInfo.collider.gameObject.GetComponent<EnemyMove>();
-                        enemy.HitDamage(attackPower);
+
+                        Debug.DrawRay(ray.origin, hitInfo.transform.position - firePos.transform.position, Color.blue, 0.3f);
+
+                        GameObject bulletEffect = Instantiate(bulletEffectFactory);
+
+                        bulletEffect.transform.position = hitInfo.point;
+
+                        bulletEffect.transform.forward = hitInfo.normal;
+
+                        if (hitInfo.transform.name.Contains("Enemy"))
+                        {
+                            EnemyMove enemy = hitInfo.collider.gameObject.GetComponent<EnemyMove>();
+                            enemy.HitDamage(attackPower);
+                        }
                     }
-                }
-                else
-                {
-                    Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
-                }
+                    else
+                    {
+                        Debug.DrawRay(ray.origin, ray.direction * rayDis, Color.red, 0.3f);
+                    }
 
 
+                }
             }
         }
        

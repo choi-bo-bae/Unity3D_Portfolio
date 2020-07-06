@@ -36,29 +36,31 @@ public class PlayerChangeWeapon : MonoBehaviour
     
     public void ChangeWeapon()
     {
-       
-        weapon++;
-        if (weapon % 2 != 0)
+        if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
         {
-            Gun.enabled = false;
-            Knife.enabled = true;
-            //칼 이미지 도출
-            ShotGun.SetActive(false);
-            Dagger.SetActive(true);
-            //무기 대거 도출
-            Fire.enabled = false;
-            Attack.enabled = true;
-        }
-        else
-        {
-            Gun.enabled = true;
-            Knife.enabled = false;
-            //총 이미지 도출
-            ShotGun.SetActive(true);
-            Dagger.SetActive(false);
-            //무기 총 도출
-            Fire.enabled = true;
-            Attack.enabled = false;
+            weapon++;
+            if (weapon % 2 != 0)
+            {
+                Gun.enabled = false;
+                Knife.enabled = true;
+                //칼 이미지 도출
+                ShotGun.SetActive(false);
+                Dagger.SetActive(true);
+                //무기 대거 도출
+                Fire.enabled = false;
+                Attack.enabled = true;
+            }
+            else
+            {
+                Gun.enabled = true;
+                Knife.enabled = false;
+                //총 이미지 도출
+                ShotGun.SetActive(true);
+                Dagger.SetActive(false);
+                //무기 총 도출
+                Fire.enabled = true;
+                Attack.enabled = false;
+            }
         }
        
     }
