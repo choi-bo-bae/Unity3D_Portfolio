@@ -269,64 +269,6 @@ public class PlayerMove : MonoBehaviour
         anim.SetTrigger("KnifeModeMove");
 
         Move();
-       
-        //h = Input.GetAxis("Horizontal");
-        //v = Input.GetAxis("Vertical");
-
-
-        //if (h == 0 && v == 0)
-        //{
-        //    h = joyStick.Horizontal;
-        //    v = joyStick.Vertical;
-        //}
-
-        //Vector3 moveDir = new Vector3(h, 0, v);
-        //moveDir.Normalize();
-
-        //moveDir = Camera.main.transform.TransformDirection(moveDir);
-
-        //if (h != 0 || v != 0)
-        //{
-        //    footStepDelay += Time.deltaTime;
-        //    if (footStepDelay >= 0.6f)
-        //    {
-        //        audio.PlayOneShot(playerSfx.walk);
-        //        footStepDelay = 0.0f;
-        //    }
-        //}
-
-        //if (h == 0 && v == 0)
-        //{
-        //    if (this.gameObject.GetComponent<PlayerChangeWeapon>().ShotGun.activeSelf == true)  //건 모드인지 체크
-        //    {
-        //        state = PlayerState.Idle;
-        //    }
-        //    else
-        //    {
-
-        //        state = PlayerState.KnifeIdle;
-        //    }
-
-        //}
-
-        ////여기까지 이동
-        //if (cc.collisionFlags == CollisionFlags.Below)
-        //{
-        //    velocityY = 0;
-        //    jumpCount = 0;
-        //}
-        //else
-        //{
-        //    velocityY += gravity * Time.deltaTime;
-        //    moveDir.y = velocityY;
-        //}
-
-        ////충돌처리와 중력 적용
-
-
-        //cc.Move(moveDir * speed * Time.deltaTime);
-
-        ////캐릭터 컨트롤러를 이용한 충돌처리 중
 
 
     }
@@ -353,22 +295,6 @@ public class PlayerMove : MonoBehaviour
             audio.PlayOneShot(playerSfx.knife);
         }
     }
-    
-
-    //public void OnTriggerEnter(Collider other)  //나이프 모드 때 상태가 어택이면 애너미 오브젝트 피격
-    //{
-    //    Debug.Log(" 플레이어가 나이프어택상태가 아님!");
-
-    //    if (state != PlayerState.KnifeAttack) return;
-
-    //    Debug.Log(" 피 깎기");
-    //    EnemyMove enemyDamage = enemy.GetComponent<EnemyMove>();
-    //    enemyDamage.HitDamage(10);
-
-
-    //}
-
-
    
 
     public void HitDamage(int value)
